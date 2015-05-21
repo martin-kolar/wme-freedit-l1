@@ -20,6 +20,7 @@
 fe_verze = '0.4.7';
 
 /* definice trvalých proměných */
+  var ctrlPressed = false;
   var FEid = [];
   var FEnazev = [];
   var FEkraj = [];
@@ -234,6 +235,20 @@ function getActualZoom() {
   return parseInt(getQueryString($('.WazeControlPermalink a').attr('href'), 'zoom'));
 }
 
+function checkCtrlPress() {
+  //  kontroluej, zda je zmacknuty ctrl
+
+  $(window).keydown(function(event) {
+    if (event.which == 17) {
+      ctrlPressed = true;
+    }
+  }).keyup(function(event) {
+    if (event.which == 17) {
+      ctrlPressed = false;
+    }
+  });
+}
+
 function getUrlParameter(param, url) {
   var sPageURL = url.substring(1);
   var sURLVariables = sPageURL.split('&');
@@ -356,13 +371,15 @@ function freedit_init() {
   });
 
   $('.freedit-link').on('click', function(event) {
-    event.preventDefault();
-    href = $(this).attr('href');
+    if (!ctrlPressed) { //  pokud pri kliknuti nedrzel control
+      event.preventDefault();
+      href = $(this).attr('href');
 
-    xy = OpenLayers.Layer.SphericalMercator.forwardMercator(parseFloat(getUrlParameter('lon', href)), parseFloat(getUrlParameter('lat', href)));
-    unsafeWindow.Waze.map.setCenter(xy);
-    unsafeWindow.Waze.map.zoomTo(getUrlParameter('zoom', href));
-  })
+      xy = OpenLayers.Layer.SphericalMercator.forwardMercator(parseFloat(getUrlParameter('lon', href)), parseFloat(getUrlParameter('lat', href)));
+      unsafeWindow.Waze.map.setCenter(xy);
+      unsafeWindow.Waze.map.zoomTo(getUrlParameter('zoom', href));
+    }
+  });
 }
 
 //fce wait co volá freedit_init
