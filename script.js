@@ -234,6 +234,19 @@ function getActualZoom() {
   return parseInt(getQueryString($('.WazeControlPermalink a').attr('href'), 'zoom'));
 }
 
+function getUrlParameter(param, url) {
+  var sPageURL = url.substring(1);
+  var sURLVariables = sPageURL.split('&');
+
+  for (var i = 0; i < sURLVariables.length; i++) {
+    var sParameterName = sURLVariables[i].split('=');
+
+    if (sParameterName[0] == param) {
+      return sParameterName[1];
+    }
+  }
+}
+
 //fce záložka obsah
 function freedit_init() {
   var addon = document.createElement('section');
@@ -264,23 +277,23 @@ function freedit_init() {
   for (var h = 0; h < konec; h++) {
     if (FEvyprsi[h] < 21 && FEvyprsi[h] > 0 && hf[0] < maxShow) {  //  horke tipy
       if (FEeditor[h] === "") {
-        tipsHtml += '<i>' + FEvyprsi[h] + 'dnů </i><u><a href="' + FElink[h] + '" target="_blank">Freedit ' + FEid[h] + '</a></u> ' + FEatributy[h] + ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + ' ' + FEnazev[h] + '&entry.1719066620" target="_blank">chci ho</a></u><br>';
+        tipsHtml += '<i>' + FEvyprsi[h] + 'dnů </i><u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEatributy[h] + ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + ' ' + FEnazev[h] + '&entry.1719066620" target="_blank">chci ho</a></u><br>';
         hf[0]++;
       }
     }
 
     else if (FEstav[h] == "1" && hf[1] < maxShow) { //  prave se edituje
-      editingHtml += '<u><a href="' + FElink[h] + '" target="_blank">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
+      editingHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
       hf[1]++;
     }
 
     else if (FEstav[h] == "2" && hf[2] < maxShow) { //  ke kontrole
-      forControllHtml += '<u><a href="' + FElink[h] + '" target="_blank">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
+      forControllHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
       hf[2]++;
     }
 
     else if (FEstav[h] == "4" && hf[3] < maxShow) { //  chyby
-      mistakesHtml += '<u><a href="' + FElink[h] + '" target="_blank">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
+      mistakesHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
       hf[3]++;
     }
   }
@@ -341,6 +354,15 @@ function freedit_init() {
       window.open('https://docs.google.com/forms/d/1Xs8J_hfjtePXo9XhymZSfJ3hiFuwYGvtmS-470ibtIE/viewform?entry.1606798517=' + cityEdit + '&entry.1257380691=' + countryEdit + '&entry.1259126728=https://www.waze.com/cs/editor/?env=row%26lon=' + actualLon + '%26lat=' + actualLat + '%26zoom=' + getActualZoom() + '&entry.1757991414=' + me.userName);
     });
   });
+
+  $('.freedit-link').on('click', function(event) {
+    event.preventDefault();
+    href = $(this).attr('href');
+
+    xy = OpenLayers.Layer.SphericalMercator.forwardMercator(parseFloat(getUrlParameter('lon', href)), parseFloat(getUrlParameter('lat', href)));
+    unsafeWindow.Waze.map.setCenter(xy);
+    unsafeWindow.Waze.map.zoomTo(getUrlParameter('zoom', href));
+  })
 }
 
 //fce wait co volá freedit_init
