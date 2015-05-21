@@ -286,30 +286,27 @@ function freedit_init() {
   var editingHtml = '';
   var forControllHtml = '';
   var mistakesHtml = '';
-  var hf = [0,0,0,0];
-  var maxShow = 7;
+  var tipsOnShow = 0;
+  var tipsMaxShow = 7;
 
   for (var h = 0; h < konec; h++) {
-    if (FEvyprsi[h] < 21 && FEvyprsi[h] > 0 && hf[0] < maxShow) {  //  horke tipy
+    if (FEvyprsi[h] < 21 && FEvyprsi[h] > 0 && tipsOnShow < tipsMaxShow) {  //  horke tipy
       if (FEeditor[h] === "") {
         tipsHtml += '<i>' + FEvyprsi[h] + 'dnů </i><u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEatributy[h] + ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + ' ' + FEnazev[h] + '&entry.1719066620" target="_blank">chci ho</a></u><br>';
-        hf[0]++;
+        tipsOnShow++;
       }
     }
 
-    else if (FEstav[h] == "1" && hf[1] < maxShow) { //  prave se edituje
+    else if (FEstav[h] == "1") { //  prave se edituje
       editingHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
-      hf[1]++;
     }
 
-    else if (FEstav[h] == "2" && hf[2] < maxShow) { //  ke kontrole
+    else if (FEstav[h] == "2") { //  ke kontrole
       forControllHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
-      hf[2]++;
     }
 
-    else if (FEstav[h] == "4" && hf[3] < maxShow) { //  chyby
+    else if (FEstav[h] == "4") { //  chyby
       mistakesHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
-      hf[3]++;
     }
   }
 
