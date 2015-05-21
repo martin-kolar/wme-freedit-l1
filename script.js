@@ -1,9 +1,23 @@
+// ==UserScript==
+// @name                Freedit L1+
+// @namespace           https://greasyfork.org/users/10038-janek250
+// @author              Janek250
+// @description         Vrstva míst úprav pro nováčky Freedit L1+
+// @include             https://www.waze.com/editor/*
+// @include             https://www.waze.com/*/editor/*
+// @include             https://editor-beta.waze.com/*
+// @grant               GM_getValue
+// @grant               GM_setValue
+// @version             0.4.7
+// @grant               none
+// ==/UserScript==
+
 // Kopie originálního skriptu davielde/rickzabel https://greasyfork.org/cs/scripts/8443-wme-mega-mapraid-overlay
 // Skript vznikal na základě Grepovy myšlenky a velikého přispění spolutvůrců Petinka1 a d2-mac, za což moc děkuji. 
-// Novikny ve verzi : doplnění Chyby v záložce, url v závorkách               
+// Novikny ve verzi : ošestření počtu HotFreeditů              
 //--------------------------------------------------------------------------------------
 
-fe_verze = '0.4.6';
+fe_verze = '0.4.7';
 
 /* definice trvalých proměných */
   var FEid = [];
@@ -231,13 +245,17 @@ function freedit_init()
     addon.innerHTML += '<br><b><u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform" target="_blank">Formulář k přihlášení editování</u></a></b></br><i><font size="1">(změnu stavu např. ke kontrole, zkontrolováno, atd..)</font></i>';
     addon.innerHTML += '<br><br>';
     addon.innerHTML += '<b>Horké tipy: </b><i><font size="1">(vyprší za:)</font></i><br>';
-    for (var h = 0; h < konec; h++) {
-        if (FEvyprsi[h] < 25 && FEvyprsi[h] > 0) {
+    var hf = 0;
+    for (var h = 0; h < konec; h++)
+        if (hf < 7) {
+            hf = hf++;
+            if (FEvyprsi[h] < 21 && FEvyprsi[h] > 0) {
             if (FEeditor[h] === "") {
             addon.innerHTML += '<i>' + FEvyprsi[h] + 'dnů </i><u><a href="' + FElink[h] + '" target="_blank">Freedit ' + FEid[h] + '</a></u> ' + FEatributy[h] + ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + ' ' + FEnazev[h] + '&entry.1719066620" target="_blank">chci ho</a></u><br>';
             }
-        }
-    }
+            }
+       } 
+    
     addon.innerHTML += '<br><b>Edituje se: </b><i><font size="1"></font></i><br>';
     for (var h = 0; h < konec; h++) {
         if (FEstav[h] == "1") {
