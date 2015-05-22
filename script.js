@@ -85,8 +85,7 @@ function freedit_bootstrap() {
   }
 
   /* Začátek kódu */
-  setTimeout(InitMapRaidOverlay, 2200);
-  setTimeout(freedit_wait, 2000);
+  freedit_wait();
 }
 
 //definování funkce a vzhled polygonu
@@ -326,7 +325,7 @@ function freedit_init() {
 
     else if (FEstav[h] == 4) { //  chyby
       mistakesHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
-      if (FEeditor[h] == Waze.model.users.objects[Waze.loginManager.user.id].userName) {
+      if (FEeditor[h] == me.userName) {
           if (Oakt != ted.getHours()) {
               localStorage.setItem("akt", ted.getHours());
               alert('Ahoj ' + FEeditor[h] + '\n\nVe Freedit ' + FEid[h] + ' byly po kontrole nalezeny chyby,\nnebo není ve stavu aby mohl být označený jako hotový\n\npro více informací zazvoň v chatu na\nJanek250 / Grepa / d2-mac\n\nnebo koukni do rozcestníku\n(odkaz je na záložce Freedit)');
@@ -406,11 +405,12 @@ function freedit_init() {
 
 //fce wait co volá freedit_init
 function freedit_wait() {
-  if (typeof Waze.model.countries.objects == 'undefined' || Object.keys(Waze.model.countries.objects).length == 0) {
+  if (!window.Waze.map) {
     setTimeout(freedit_wait, 500);
   } else {
     hasStates = Waze.model.hasStates();
     freedit_init();
+    InitMapRaidOverlay();
   }
 }
 
