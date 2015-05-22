@@ -35,6 +35,21 @@ fe_verze = '0.4.7';
   var barva = ["#00BBFF","#FFAE00","#FFFF00","#5E8F47","#FF0000"]; //HTML barvy modrá = #00BBFF oranžová = #FFAE00 žlutá = #FFFF00 zelená = #5E8F47 červená = #FF0000
   var zx = [];
   var zy = [];
+  var countryList = [];
+  countryList['Hlavní město Praha'] = 'Hlavní město Praha';
+  countryList['Jihočeský kraj'] = 'Jihočeský';
+  countryList['Jihomoravský kraj'] = 'Jihomoravský';
+  countryList['Karlovarský kraj'] = 'Karlovarský';
+  countryList['Kraj Vysočina'] = 'Vysočina';
+  countryList['Královéhradecký kraj'] = 'Královéhradecký';
+  countryList['Liberecký kraj'] = 'Liberecký';
+  countryList['Moravskoslezský kraj'] = 'Moravskoslezský';
+  countryList['Olomoucký kraj'] = 'Olomoucký';
+  countryList['Pardubický kraj'] = 'Pardubický';
+  countryList['Plzeňský kraj'] = 'Plzeňský';
+  countryList['Středočeský kraj'] = 'Středočeský';
+  countryList['Ústecký kraj'] = 'Ústecký';
+  countryList['Zlínský kraj'] = 'Zlínský';
 //Obdelník na ležato
   var zxl = [0.245760,0.122880,0.061440,0.030720,0.015360,0.007680,0.003840,0.001920,0.000960,0.000480,0.000240];
   var zyl = [0.088064,0.044032,0.022016,0.011008,0.005504,0.002752,0.001376,0.000688,0.000344,0.000172,0.000086];
@@ -358,7 +373,7 @@ function freedit_init() {
           cityEdit = data.results[0].address_components[i].long_name;
         }
         else if (data.results[0].address_components[i].types[0] == 'administrative_area_level_1' && data.results[0].address_components[i].types[1] == 'political') {
-          countryEdit = data.results[0].address_components[i].long_name;
+          countryEdit = countryList[data.results[0].address_components[i].long_name];
           break;
         }
       }
