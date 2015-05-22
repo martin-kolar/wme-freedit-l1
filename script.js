@@ -320,7 +320,7 @@ function freedit_init() {
       editingHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
     }
 
-    else if (FEstav[h] == "2") { //  ke kontrole
+    /*else*/ if (FEstav[h] == "2") { //  ke kontrole
       forControllHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
     }
 
