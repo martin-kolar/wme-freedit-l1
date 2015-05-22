@@ -294,7 +294,8 @@ function freedit_init() {
 
   // mezera  &nbsp; /nové okno  target="_blank" /
   addon.innerHTML = '<b><u><a href="#" id="freedit-add-new">Formulář pro zadání nového</a></u></b>';
-  // addon.innerHTML += '<br><b><u><a href="https://docs.google.com/forms/d/1Xs8J_hfjtePXo9XhymZSfJ3hiFuwYGvtmS-470ibtIE/viewform" target="_blank">Formulář pro zadání nového</a></u></b>';
+  //  tady je odkaz na prepinac vypnuto/zapnuto
+  addon.innerHTML += '<b><u><a href="#" id="freedit-switch-on-off">přepínač na vypnutí/zapnutí</a></u></b>';
   addon.innerHTML += '<br><u><a href="https://docs.google.com/spreadsheets/d/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/edit#gid=0" target="_blank">Tabulka</a></u></b>&nbsp<i><font size="1">(online přehled a seznam)</font></i>';
   addon.innerHTML += '<br><u><a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">Fórum</a></u>&nbsp;<i><font size="1">(Rozcestník / chat místnost)</font></i>';
   addon.innerHTML += '<br><b><u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform" target="_blank">Formulář k přihlášení editování</u></a></b></br><i><font size="1">(změnu stavu např. ke kontrole, zkontrolováno, atd..)</font></i>';
@@ -400,6 +401,12 @@ function freedit_init() {
       unsafeWindow.Waze.map.setCenter(xy);
       unsafeWindow.Waze.map.zoomTo(getUrlParameter('zoom', href));
     }
+  });
+
+  $('#freedit-switch-on-off').on('click', function(event) {
+    event.preventDefault();
+
+    //  tady si pak pis jakykkoliv kod, ktery se provede po kliknuti na prepinac
   });
 }
 
