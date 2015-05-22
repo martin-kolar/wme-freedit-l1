@@ -12,7 +12,10 @@
 
 // Kopie originálního skriptu davielde/rickzabel https://greasyfork.org/cs/scripts/8443-wme-mega-mapraid-overlay
 // Skript vznikal na základě Grepovy myšlenky a velikého přispění spolutvůrců Petinka1 a d2-mac, za což moc děkuji.
-// Novikny ve verzi : ošestření počtu HotFreeditů
+// Novikny ve verzi : 
+// - uprava předvyplnění form2 pouze ID
+// - chybová hláška pro konkretního uživatele při stavu 4 jedenkrát za hodinu
+// - 
 //--------------------------------------------------------------------------------------
 
 fe_verze = '0.4.9';
@@ -33,6 +36,9 @@ fe_verze = '0.4.9';
   var barva = ["#00BBFF","#FFAE00","#FFFF00","#5E8F47","#FF0000"]; //HTML barvy modrá = #00BBFF oranžová = #FFAE00 žlutá = #FFFF00 zelená = #5E8F47 červená = #FF0000
   var zx = [];
   var zy = [];
+  var ted = new Date();
+  var Oakt;
+  Oakt = localStorage.getItem("akt");
   var countryList = [];
   countryList['Hlavní město Praha'] = 'Hlavní město Praha';
   countryList['Jihočeský kraj'] = 'Jihočeský';
@@ -305,7 +311,7 @@ function freedit_init() {
   for (var h = 0; h < konec; h++) {
     if (FEvyprsi[h] < 21 && FEvyprsi[h] > 0 && tipsOnShow < tipsMaxShow) {  //  horke tipy
       if (FEeditor[h] === "") {
-        tipsHtml += '<i>' + FEvyprsi[h] + 'dnů </i><u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEatributy[h] + ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + ' ' + FEnazev[h] + '&entry.1719066620" target="_blank">chci ho</a></u><br>';
+        tipsHtml += '<i>' + FEvyprsi[h] + 'dnů </i><u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEatributy[h] + ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.1719066620" target="_blank">chci ho</a></u><br>';
         tipsOnShow++;
       }
     }
@@ -320,6 +326,12 @@ function freedit_init() {
 
     else if (FEstav[h] == "4") { //  chyby
       mistakesHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
+      if (FEeditor[h] == Waze.model.users.objects[Waze.loginManager.user.id].userName) {
+          if (Oakt != ted.getHours()) {
+              localStorage.setItem("akt", ted.getHours());
+              alert('Ahoj ' + FEeditor[h] + '\n\nVe Freedit ' + FEid[h] + ' byly po kontrole nalezeny chyby,\nnebo není ve stavu aby mohl být označený jako hotový\n\npro více informací zazvoň v chatu na\nJanek250 / Grepa / d2-mac\n\nnebo koukni do rozcestníku\n(odkaz je na záložce Freedit)');
+          }
+      }
     }
   }
 
