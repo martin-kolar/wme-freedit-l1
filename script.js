@@ -1,14 +1,12 @@
 // ==UserScript==
-// @name                Freedit L1+
+// @name                Beta-Freedit L1+
 // @namespace           https://greasyfork.org/users/10038-janek250
-// @author              Janek250
+// @author              Janek250 & Martin Kolář
 // @description         Vrstva míst úprav pro nováčky Freedit L1+
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @grant               GM_getValue
-// @grant               GM_setValue
-// @version             0.4.7
+// @version             0.4.9
 // @grant               none
 // ==/UserScript==
 
@@ -17,7 +15,7 @@
 // Novikny ve verzi : ošestření počtu HotFreeditů
 //--------------------------------------------------------------------------------------
 
-fe_verze = '0.4.7';
+fe_verze = '0.4.9';
 
 /* definice trvalých proměných */
   var ctrlPressed = false;
