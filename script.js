@@ -309,22 +309,22 @@ function freedit_init() {
   var tipsMaxShow = 7;
 
   for (var h = 0; h < konec; h++) {
-    if (FEvyprsi[h] < 21 && FEvyprsi[h] > 0 && tipsOnShow < tipsMaxShow) {  //  horke tipy
+    if (FEvyprsi[h] < 21 && FEvyprsi[h] > 0 && tipsOnShow < tipsMaxShow && FEstav[h] == 0) {  //  horke tipy
       if (FEeditor[h] === "") {
         tipsHtml += '<i>' + FEvyprsi[h] + 'dnů </i><u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEatributy[h] + ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.1719066620" target="_blank">chci ho</a></u><br>';
         tipsOnShow++;
       }
     }
 
-    else if (FEstav[h] == "1") { //  prave se edituje
+    else if (FEstav[h] == 1) { //  prave se edituje
       editingHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
     }
 
-    /*else*/ if (FEstav[h] == "2") { //  ke kontrole
+    else if (FEstav[h] == 2) { //  ke kontrole
       forControllHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
     }
 
-    else if (FEstav[h] == "4") { //  chyby
+    else if (FEstav[h] == 4) { //  chyby
       mistakesHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
       if (FEeditor[h] == Waze.model.users.objects[Waze.loginManager.user.id].userName) {
           if (Oakt != ted.getHours()) {
