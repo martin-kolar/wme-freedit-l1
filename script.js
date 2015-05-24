@@ -6,7 +6,7 @@
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @version             0.4.9
+// @version             0.4.9.1
 // @grant               none
 // ==/UserScript==
 
@@ -18,7 +18,7 @@
 // - 
 //--------------------------------------------------------------------------------------
 
-fe_verze = '0.4.9';
+fe_verze = 'beta 0.4.9';
 
 /* definice trvalých proměných */
   var ctrlPressed = false;
@@ -172,7 +172,7 @@ function InitMapRaidOverlay() {
   raid_mapLayer.setVisibility(true);
 
   for (var i = 0; i < konec; i++) {
-    var href = FElink[i];     //kde link je údaj z tabulky ve sloupci permalink
+    var href = FElink[i];
     var x = parseFloat(getQueryString(href, 'lon'));
     var y = parseFloat(getQueryString(href, 'lat'));
     var zoom = parseInt(getQueryString(href, 'zoom'));
@@ -183,9 +183,6 @@ function InitMapRaidOverlay() {
     var b1x = x - zx[zoom]; var b1y = y + zy[zoom]; var b2x = x + zx[zoom]; var b3y = y - zy[zoom];
 
     var Freedit01 = [{lon:b1x,lat:b1y},{lon:b2x,lat:b1y},{lon:b2x,lat:b3y},{lon:b1x,lat:b3y}];
-    //aktuality - pokud je editor vypiš jmeno, pokud není tady muze byt tvoje jmeno
-    // pokud stav 0 ( tady muze byt tvoje jmeno) 1 jmeno editora 2 jmeno editora a 'ke kontrole' 3 hotovo (editoval) 4 editor + chyba čti forum/rozcestník
-    //if(FEeditor[i] !== "") {} else { FEeditor[i] = ' tady může být tvoje jméno ';}
     var FEinfo = '';
     if(FEstav[i] == 0) {FEinfo = '\n Tento Freedit je VOLNÝ \n zbývá : ' + FEvyprsi[i] + ' dnů' + '\n' + FEatributy[i] + ' viz záložka «';}
     if(FEstav[i] == 1) {FEinfo = '\n edituje : ' + FEeditor[i] + '\n zbývá : ' + FEvyprsi[i] + ' dnů' + '\n' + FEatributy[i] + ' viz záložka «';}
@@ -294,13 +291,13 @@ function freedit_init() {
 
   // mezera  &nbsp; /nové okno  target="_blank" /
   addon.innerHTML = '<b><u><a href="#" id="freedit-add-new">Formulář pro zadání nového</a></u></b>';
-  //  tady je odkaz na prepinac vypnuto/zapnuto
-  addon.innerHTML += '<b><u><a href="#" id="freedit-switch-on-off">přepínač na vypnutí/zapnutí</a></u></b>';
   addon.innerHTML += '<br><u><a href="https://docs.google.com/spreadsheets/d/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/edit#gid=0" target="_blank">Tabulka</a></u></b>&nbsp<i><font size="1">(online přehled a seznam)</font></i>';
   addon.innerHTML += '<br><u><a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">Fórum</a></u>&nbsp;<i><font size="1">(Rozcestník / chat místnost)</font></i>';
   addon.innerHTML += '<br><b><u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform" target="_blank">Formulář k přihlášení editování</u></a></b></br><i><font size="1">(změnu stavu např. ke kontrole, zkontrolováno, atd..)</font></i>';
   addon.innerHTML += '<br><br>';
-
+  addon.innerHTML += '<br><b><u><a href="#" id="freedit-switch-on-off">přepínač na vypnutí/zapnutí</a></u></b>';
+  addon.innerHTML += '<br><br>';
+  
   var tipsHtml = '';
   var editingHtml = '';
   var forControllHtml = '';
