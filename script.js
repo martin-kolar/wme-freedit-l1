@@ -6,7 +6,7 @@
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @version             0.4.9.1
+// @version             0.4.9.2
 // @grant               none
 // ==/UserScript==
 
@@ -37,8 +37,7 @@ fe_verze = 'beta 0.4.9';
   var zx = [];
   var zy = [];
   var ted = new Date();
-  var Oakt;
-  Oakt = localStorage.getItem("akt");
+  var Oakt = localStorage.getItem("akt");
   var countryList = [];
   countryList['Hlavní město Praha'] = 'Hlavní město Praha';
   countryList['Jihočeský kraj'] = 'Jihočeský';
