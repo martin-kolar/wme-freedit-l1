@@ -409,7 +409,7 @@ function freedit_init() {
 
 //fce wait co volá freedit_init
 function freedit_wait() {
-  if (!window.Waze.map && typeof me == 'undefined') {
+  if (!window.Waze.map || typeof me == 'undefined' || typeof map == 'undefined') {
     setTimeout(freedit_wait, 500);
   } else {
     hasStates = Waze.model.hasStates();
