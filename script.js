@@ -6,19 +6,19 @@
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @version             0.4.9.2
+// @version             0.4.9.4
 // @grant               none
 // ==/UserScript==
 
 // Kopie originálního skriptu davielde/rickzabel https://greasyfork.org/cs/scripts/8443-wme-mega-mapraid-overlay
 // Skript vznikal na základě Grepovy myšlenky a velikého přispění spolutvůrců Petinka1 a d2-mac, za což moc děkuji.
 // Novikny ve verzi : 
-// - uprava předvyplnění form2 pouze ID
-// - chybová hláška pro konkretního uživatele při stavu 4 jedenkrát za hodinu
-// - 
+// - ONline/OFFline
+// - opraveno předvyplňování formulář
+// - vydaná verze
 //--------------------------------------------------------------------------------------
 
-fe_verze = 'beta 0.4.9';
+fe_verze = 'Beta 0.4.9.4';
 
 /* definice trvalých proměných */
   var ctrlPressed = false;
@@ -37,7 +37,8 @@ fe_verze = 'beta 0.4.9';
   var zx = [];
   var zy = [];
   var ted = new Date();
-  var Oakt = localStorage.getItem("akt");
+  var akt = localStorage.getItem("FEakt");
+  var onoff = localStorage.getItem("FEonoff"); if (onoff === null) { onoff = "on";}
   var countryList = [];
   countryList['Hlavní město Praha'] = 'Hlavní město Praha';
   countryList['Jihočeský kraj'] = 'Jihočeský';
@@ -197,6 +198,7 @@ function InitMapRaidOverlay() {
   mro_Map.events.register("zoomend", Waze.map, function(){CurrentRaidLocation(raid_mapLayer);});
 }
 
+if (onoff == "on") {             
 $.getJSON('https://spreadsheets.google.com/feeds/list/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/od6/public/values?alt=json', function(data) {
   for (var i = 0; data.feed.entry[i].gsx$id.$t !== ""; i++) {
     FEid[i] = data.feed.entry[i].gsx$id.$t;
@@ -212,6 +214,7 @@ $.getJSON('https://spreadsheets.google.com/feeds/list/1wywD5uYNmejO_t6Gufzu5tBW0
     konec++;
   }
 });
+}
 
 //fce k záložce
 function getElementsByClassName(classname, node) {
@@ -293,8 +296,12 @@ function freedit_init() {
   addon.innerHTML += '<br><u><a href="https://docs.google.com/spreadsheets/d/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/edit#gid=0" target="_blank">Tabulka</a></u></b>&nbsp<i><font size="1">(online přehled a seznam)</font></i>';
   addon.innerHTML += '<br><u><a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">Fórum</a></u>&nbsp;<i><font size="1">(Rozcestník / chat místnost)</font></i>';
   addon.innerHTML += '<br><b><u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform" target="_blank">Formulář k přihlášení editování</u></a></b></br><i><font size="1">(změnu stavu např. ke kontrole, zkontrolováno, atd..)</font></i>';
-  addon.innerHTML += '<br><br>';
-  addon.innerHTML += '<br><b><u><a href="#" id="freedit-switch-on-off">přepínač na vypnutí/zapnutí</a></u></b>';
+  addon.innerHTML += '<br>';
+  if (onoff == "on") {
+    addon.innerHTML += '<br>Stav: <b><u><a href="#" id="freedit-switch-on-off">ONline</a></u></b> Načteno: <b>' + konec + '</b> F';
+  } else {
+    addon.innerHTML += '<br>Stav: <b><u><a href="#" id="freedit-switch-on-off">OFFline</a></u></b> Načteno: <b>' + konec + '</b> F';
+  }
   addon.innerHTML += '<br><br>';
   
   var tipsHtml = '';
@@ -304,6 +311,7 @@ function freedit_init() {
   var tipsOnShow = 0;
   var tipsMaxShow = 7;
 
+  if (onoff == "on") {
   for (var h = 0; h < konec; h++) {
     if (FEvyprsi[h] < 21 && FEvyprsi[h] > 0 && tipsOnShow < tipsMaxShow && FEstav[h] == 0) {  //  horke tipy
       if (FEeditor[h] === "") {
@@ -323,14 +331,14 @@ function freedit_init() {
     else if (FEstav[h] == 4) { //  chyby
       mistakesHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
       if (FEeditor[h] == me.userName) {
-          if (Oakt != ted.getHours()) {
-              localStorage.setItem("akt", ted.getHours());
+          if (akt != ted.getHours()) {
+              localStorage.setItem("FEakt", ted.getHours());
               alert('Ahoj ' + FEeditor[h] + '\n\nVe Freedit ' + FEid[h] + ' byly po kontrole nalezeny chyby,\nnebo není ve stavu aby mohl být označený jako hotový\n\npro více informací zazvoň v chatu na\nJanek250 / Grepa / d2-mac\n\nnebo koukni do rozcestníku\n(odkaz je na záložce Freedit)');
           }
       }
     }
   }
-
+  
   if (tipsHtml != '') { //  pokud jsou nejake horke tipy, zobrazime
     addon.innerHTML += '<b>Horké tipy: </b><i><font size="1">(vyprší za:)</font></i><br>' + tipsHtml;
   }
@@ -346,8 +354,7 @@ function freedit_init() {
   if (mistakesHtml != '') { //  pokud jsou nekde nejake chyby, zobrazime to
     addon.innerHTML += '<br><b>Chyby: </b><i><font size="1"><a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">(více info Fórum/rozcestník)</a></font></i><br>' + mistakesHtml;
   }
-
-  addon.innerHTML += '<font size="1"><br>Celkový počet načtených Freeditů : </b>' + konec + '</i></font>';
+  }
   addon.innerHTML += '<font size="1"><br>Legenda: <i><a href="https://www.waze.com/forum/viewtopic.php?f=22&t=136397" target="_blank"> (Script Freedit L1+ verze ' + fe_verze + ')</a></i></font>';
   addon.innerHTML += '<font size="1"><br>G - oprava geometrie <br> K - kreslit nové uličky / parkoviště / areály <br> O - kontrola odbočení / jednosměrek <br> N - kontrola názvu ulic / obce</font>'; //vytvoří odkaz v tabu a připojí proměnnou
 
@@ -401,9 +408,13 @@ function freedit_init() {
 
   $('#freedit-switch-on-off').on('click', function(event) {
     event.preventDefault();
-
-    //  tady si pak pis jakykkoliv kod, ktery se provede po kliknuti na prepinac
-  });
+    if (onoff == "on") {
+      localStorage.setItem("FEonoff", 'off');
+    } else {
+      localStorage.setItem("FEonoff", 'on');
+    }
+      window.location.reload();
+  });  
 }
 
 //fce wait co volá freedit_init
@@ -413,7 +424,9 @@ function freedit_wait() {
   } else {
     hasStates = Waze.model.hasStates();
     freedit_init();
-    InitMapRaidOverlay();
+    if (onoff == "on") {
+      InitMapRaidOverlay();
+    }
   }
 }
 
