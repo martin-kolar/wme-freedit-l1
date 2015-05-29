@@ -380,9 +380,6 @@ console.log(href, $('.WazeControlPermalink a').attr('href'));
     var actualLon = getActualGpsLon();
     var actualLat = getActualGpsLat();
 
-    actualLon = 16.835432;
-    actualLat = 49.29059;
-
     $.getJSON('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + actualLat + ',' + actualLon, function(data) {
       var cityEdit = '';
       var countryEdit = '';
