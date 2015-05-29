@@ -6,7 +6,7 @@
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @version             0.4.9.4
+// @version             0.4.9.5
 // @grant               none
 // ==/UserScript==
 
@@ -286,7 +286,7 @@ function freedit_init() {
 
   //zavolat permalink
   var href = $('.WazeControlPermalink a').attr('href');
-
+console.log(href, $('.WazeControlPermalink a').attr('href'));
   var lon = parseFloat(getQueryString(href, 'lon'));
   var lat = parseFloat(getQueryString(href, 'lat'));
   var zoom = parseInt(getQueryString(href, 'zoom'));
@@ -380,21 +380,29 @@ function freedit_init() {
     var actualLon = getActualGpsLon();
     var actualLat = getActualGpsLat();
 
+    actualLon = 16.835432;
+    actualLat = 49.29059;
+
     $.getJSON('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + actualLat + ',' + actualLon, function(data) {
       var cityEdit = '';
       var countryEdit = '';
+      var countryEdit2 = '';  //  kraj
 
-      for (var i in data.results[0].address_components) {
-        if (data.results[0].address_components[i].types[0] == 'locality' && data.results[0].address_components[i].types[1] == 'political') {
-          cityEdit = data.results[0].address_components[i].long_name;
+      for (var i in data.results[1].address_components) {
+        if (data.results[1].address_components[i].types[0] == 'locality' && data.results[1].address_components[i].types[1] == 'political') {
+          cityEdit = data.results[1].address_components[i].long_name;
         }
-        else if (data.results[0].address_components[i].types[0] == 'administrative_area_level_1' && data.results[0].address_components[i].types[1] == 'political') {
-          countryEdit = countryList[data.results[0].address_components[i].long_name];
+        else if (data.results[1].address_components[i].types[0] == 'administrative_area_level_2' && data.results[1].address_components[i].types[1] == 'political') {
+          countryEdit2 = data.results[1].address_components[i].long_name;
+        }
+        else if (data.results[1].address_components[i].types[0] == 'administrative_area_level_1' && data.results[1].address_components[i].types[1] == 'political') {
+          countryEdit = countryList[data.results[1].address_components[i].long_name];
           break;
         }
       }
 
       window.open('https://docs.google.com/forms/d/1Xs8J_hfjtePXo9XhymZSfJ3hiFuwYGvtmS-470ibtIE/viewform?entry.1606798517=' + cityEdit + '&entry.1257380691=' + countryEdit + '&entry.1259126728=https://www.waze.com/cs/editor/?env=row%26lon=' + actualLon + '%26lat=' + actualLat + '%26zoom=' + getActualZoom() + '&entry.1757991414=' + me.userName);
+      //  pridat kraj "countryEdit2" jako promennou do formu
     });
   });
 
