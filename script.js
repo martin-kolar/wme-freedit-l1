@@ -18,7 +18,7 @@
 // - vydaná verze
 //--------------------------------------------------------------------------------------
 
-fe_verze = 'Beta 0.4.9.4';
+fe_verze = 'Beta 0.4.9.5';
 
 /* definice trvalých proměných */
   var ctrlPressed = false;
@@ -39,6 +39,7 @@ fe_verze = 'Beta 0.4.9.4';
   var ted = new Date();
   var akt = localStorage.getItem("FEakt");
   var onoff = localStorage.getItem("FEonoff"); if (onoff === null) { onoff = "on";}
+  var FEdataLoad = false;
   var countryList = [];
   countryList['Hlavní město Praha'] = 'Hlavní město Praha';
   countryList['Jihočeský kraj'] = 'Jihočeský';
@@ -64,6 +65,30 @@ fe_verze = 'Beta 0.4.9.4';
   var zxc = [0.136272,0.068136,0.034068,0.017034,0.008517,0.004259,0.002129,0.001065,0.000532,0.000266,0.000133];
   var zyc = [0.088064,0.044032,0.022016,0.011008,0.005504,0.002752,0.001376,0.000688,0.000344,0.000172,0.000086];
 
+
+
+if (onoff == "on") {
+  console.log('WME Freedit: Start load data');
+
+  $.getJSON('https://spreadsheets.google.com/feeds/list/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/od6/public/values?alt=json', function(data) {
+    for (var i = 0; data.feed.entry[i].gsx$id.$t !== ""; i++) {
+      FEid[i] = data.feed.entry[i].gsx$id.$t;
+      FEnazev[i] = data.feed.entry[i].gsx$nazev.$t;
+      FEkraj[i] = data.feed.entry[i].gsx$kraj.$t;
+      FEvlozil[i] = data.feed.entry[i].gsx$vlozil.$t;
+      FEeditor[i] = data.feed.entry[i].gsx$editor.$t;
+      FEstav[i] = data.feed.entry[i].gsx$stav.$t;
+      FEvyprsi[i] = data.feed.entry[i].gsx$vyprsi.$t;
+      FEtvar[i] = data.feed.entry[i].gsx$tvar.$t;
+      FElink[i] = data.feed.entry[i].gsx$permalink.$t;
+      FEatributy[i] = data.feed.entry[i].gsx$atribut.$t;
+      konec++;
+    }
+
+    console.log('WME Freedit: End load data');
+    FEdataLoad = true;
+  });
+}
 
 //Ošetření service Greasymonkey
 function freedit_bootstrap() {
@@ -198,24 +223,6 @@ function InitMapRaidOverlay() {
   mro_Map.events.register("zoomend", Waze.map, function(){CurrentRaidLocation(raid_mapLayer);});
 }
 
-if (onoff == "on") {
-  $.getJSON('https://spreadsheets.google.com/feeds/list/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/od6/public/values?alt=json', function(data) {
-    for (var i = 0; data.feed.entry[i].gsx$id.$t !== ""; i++) {
-      FEid[i] = data.feed.entry[i].gsx$id.$t;
-      FEnazev[i] = data.feed.entry[i].gsx$nazev.$t;
-      FEkraj[i] = data.feed.entry[i].gsx$kraj.$t;
-      FEvlozil[i] = data.feed.entry[i].gsx$vlozil.$t;
-      FEeditor[i] = data.feed.entry[i].gsx$editor.$t;
-      FEstav[i] = data.feed.entry[i].gsx$stav.$t;
-      FEvyprsi[i] = data.feed.entry[i].gsx$vyprsi.$t;
-      FEtvar[i] = data.feed.entry[i].gsx$tvar.$t;
-      FElink[i] = data.feed.entry[i].gsx$permalink.$t;
-      FEatributy[i] = data.feed.entry[i].gsx$atribut.$t;
-      konec++;
-    }
-  });
-}
-
 //fce k záložce
 function getElementsByClassName(classname, node) {
   if(!node) {
@@ -286,7 +293,7 @@ function freedit_init() {
 
   //zavolat permalink
   var href = $('.WazeControlPermalink a').attr('href');
-console.log(href, $('.WazeControlPermalink a').attr('href'));
+
   var lon = parseFloat(getQueryString(href, 'lon'));
   var lat = parseFloat(getQueryString(href, 'lat'));
   var zoom = parseInt(getQueryString(href, 'zoom'));
@@ -431,10 +438,25 @@ function freedit_wait() {
     setTimeout(freedit_wait, 500);
   } else {
     hasStates = Waze.model.hasStates();
-    freedit_init();
+
     if (onoff == "on") {
-      InitMapRaidOverlay();
+      feedit_after_load_data();
     }
+    else {
+      console.log('WME Freedit: Load data off');
+      freedit_init();
+    }
+  }
+}
+
+function feedit_after_load_data() {
+  if (FEdataLoad) {
+    console.log('WME Freedit: Start showing layer');
+    freedit_init();
+    InitMapRaidOverlay();
+  }
+  else {
+    setTimeout(feedit_after_load_data, 500);
   }
 }
 
