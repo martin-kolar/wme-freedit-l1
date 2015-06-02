@@ -6,7 +6,7 @@
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @version             0.4.9.5
+// @version             0.5.0
 // @grant               none
 // ==/UserScript==
 
@@ -18,13 +18,14 @@
 // - vydaná verze
 //--------------------------------------------------------------------------------------
 
-fe_verze = 'Beta 0.4.9.5';
+fe_verze = 'Beta 0.5.0';
 
 /* definice trvalých proměných */
   var ctrlPressed = false;
   var FEid = [];
   var FEnazev = [];
   var FEkraj = [];
+  var FEokres = [];
   var FEvlozil = [];
   var FEeditor = [];
   var FEstav = [];
@@ -40,6 +41,7 @@ fe_verze = 'Beta 0.4.9.5';
   var akt = localStorage.getItem("FEakt");
   var onoff = localStorage.getItem("FEonoff"); if (onoff === null) { onoff = "on";}
   var FEdataLoad = false;
+  var FEpro = "";
   var countryList = [];
   countryList['Hlavní město Praha'] = 'Hlavní město Praha';
   countryList['Jihočeský kraj'] = 'Jihočeský';
@@ -75,6 +77,7 @@ if (onoff == "on") {
       FEid[i] = data.feed.entry[i].gsx$id.$t;
       FEnazev[i] = data.feed.entry[i].gsx$nazev.$t;
       FEkraj[i] = data.feed.entry[i].gsx$kraj.$t;
+      FEokres[i] = data.feed.entry[i].gsx$okres.$t;
       FEvlozil[i] = data.feed.entry[i].gsx$vlozil.$t;
       FEeditor[i] = data.feed.entry[i].gsx$editor.$t;
       FEstav[i] = data.feed.entry[i].gsx$stav.$t;
@@ -215,7 +218,7 @@ function InitMapRaidOverlay() {
     if(FEstav[i] == 3) {FEinfo = '\n editoval : ' + FEeditor[i] + '\n HOTOVO, děkujeme ';}
     if(FEstav[i] == 4) {FEinfo = '\n editoval : ' + FEeditor[i] + '\n CHYBA, více info Fórum/rozcestník.\n «« odkaz na záložce ««';}
 
-    AddRaidPolygon(raid_mapLayer, Freedit01, barva[FEstav[i]], FEid[i] + '\n' + FEnazev[i] + '\n vložil : ' + FEvlozil[i] + FEinfo);
+    AddRaidPolygon(raid_mapLayer, Freedit01, barva[FEstav[i]], FEid[i] + '\n' + FEnazev[i] + ' (' + FEokres[i] + ')\n vložil : ' + FEvlozil[i] + FEinfo);
   }
 
   setTimeout(function(){CurrentRaidLocation(raid_mapLayer);},3000);
@@ -302,7 +305,7 @@ function freedit_init() {
   addon.innerHTML = '<b><u><a href="#" id="freedit-add-new">Formulář pro zadání nového</a></u></b>';
   addon.innerHTML += '<br><u><a href="https://docs.google.com/spreadsheets/d/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/edit#gid=0" target="_blank">Tabulka</a></u></b>&nbsp<i><font size="1">(online přehled a seznam)</font></i>';
   addon.innerHTML += '<br><u><a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">Fórum</a></u>&nbsp;<i><font size="1">(Rozcestník / chat místnost)</font></i>';
-  addon.innerHTML += '<br><b><u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform" target="_blank">Formulář k přihlášení editování</u></a></b></br><i><font size="1">(změnu stavu např. ke kontrole, zkontrolováno, atd..)</font></i>';
+  addon.innerHTML += '<br><b><u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1719066620=' + me.userName + '" target="_blank">Formulář k přihlášení editování</u></a></b></br><i><font size="1">(změnu stavu např. ke kontrole, zkontrolováno, atd..)</font></i>';
   addon.innerHTML += '<br>';
 
   if (onoff == "on") {
@@ -322,15 +325,16 @@ function freedit_init() {
 
   if (onoff == "on") {
     for (var h = 0; h < konec; h++) {
-      if (FEvyprsi[h] < 21 && FEvyprsi[h] > 0 && tipsOnShow < tipsMaxShow && FEstav[h] == 0) {  //  horke tipy
+      if (FEvyprsi[h] < 21 && FEvyprsi[h] && tipsOnShow < tipsMaxShow && FEstav[h] == 0) {  //  horke tipy
+       if (FEvyprsi[h] < 0) { FEpro = "chci ho (L1-6)"; } else { FEpro = "chci ho (L1-2)";}  // trošku prasáren neuškodí ;)
         if (FEeditor[h] === "") {
-          tipsHtml += '<i>' + FEvyprsi[h] + 'dnů </i><u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEatributy[h] + ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.1719066620" target="_blank">chci ho</a></u><br>';
+          tipsHtml += '<i>' + FEvyprsi[h] + 'dnů </i><u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEatributy[h] + ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=1+-+P%C5%99ihl%C3%A1sit+se+k+editov%C3%A1n%C3%AD&entry.1719066620=' + me.userName + '" target="_blank">' + FEpro + '</a></u><br>';
           tipsOnShow++;
         }
       }
 
       else if (FEstav[h] == 1) { //  prave se edituje
-        editingHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
+        editingHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=2+-+M%C3%A1m+hotovo+pros%C3%ADm+zkontrolujte&entry.1719066620=' + me.userName + '" target="_blank">ke kontrole</a></u><br>';
       }
 
       else if (FEstav[h] == 2) { //  ke kontrole
@@ -405,8 +409,7 @@ function freedit_init() {
         }
       }
 
-      window.open('https://docs.google.com/forms/d/1Xs8J_hfjtePXo9XhymZSfJ3hiFuwYGvtmS-470ibtIE/viewform?entry.1606798517=' + cityEdit + '&entry.1257380691=' + countryEdit + '&entry.1259126728=https://www.waze.com/cs/editor/?env=row%26lon=' + actualLon + '%26lat=' + actualLat + '%26zoom=' + getActualZoom() + '&entry.1757991414=' + me.userName);
-      //  pridat kraj "countryEdit2" jako promennou do formu
+      window.open('https://docs.google.com/forms/d/1Xs8J_hfjtePXo9XhymZSfJ3hiFuwYGvtmS-470ibtIE/viewform?entry.1606798517=' + cityEdit + '&entry.1257380691=' + countryEdit + '&entry.1906822446=' + countryEdit2 + '&entry.519781400=1+-+Obdeln%C3%ADk+na+le%C5%BEato+(v%C3%BD%C5%99ez+z+obrazovky)&entry.471479550=K+-+kreslit+nov%C3%A9+uli%C4%8Dky+/+parkovi%C5%A1t%C4%9B+/+are%C3%A1ly&entry.1259126728=https://www.waze.com/cs/editor/?env=row%26lon=' + actualLon + '%26lat=' + actualLat + '%26zoom=' + getActualZoom() + '&entry.1757991414=' + me.userName);
     });
   });
 
@@ -428,7 +431,7 @@ function freedit_init() {
     } else {
       localStorage.setItem("FEonoff", 'on');
     }
-      window.location.reload();
+    window.location.reload();
   });
 }
 
