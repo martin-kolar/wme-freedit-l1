@@ -18,7 +18,7 @@
 // - vydaná verze
 //--------------------------------------------------------------------------------------
 
-fe_verze = 'Beta 0.5.0';
+fe_verze = 'Beta 0.5.2';
 
 /* definice trvalých proměných */
   var ctrlPressed = false;
@@ -409,7 +409,7 @@ function freedit_init() {
         }
       }
 
-      window.open('https://docs.google.com/forms/d/1Xs8J_hfjtePXo9XhymZSfJ3hiFuwYGvtmS-470ibtIE/viewform?entry.1606798517=' + cityEdit + '&entry.1257380691=' + countryEdit + '&entry.1906822446=' + countryEdit2 + '&entry.519781400=1+-+Obdeln%C3%ADk+na+le%C5%BEato+(v%C3%BD%C5%99ez+z+obrazovky)&entry.471479550=K+-+kreslit+nov%C3%A9+uli%C4%8Dky+/+parkovi%C5%A1t%C4%9B+/+are%C3%A1ly&entry.1259126728=https://www.waze.com/cs/editor/?env=row%26lon=' + actualLon + '%26lat=' + actualLat + '%26zoom=' + getActualZoom() + '&entry.1757991414=' + me.userName);
+      window.open('https://docs.google.com/forms/d/1Xs8J_hfjtePXo9XhymZSfJ3hiFuwYGvtmS-470ibtIE/viewform?entry.1606798517=' + cityEdit + '&entry.1257380691=' + countryEdit + '&entry.1906822446=' + countryEdit2 + '&entry.519781400=1+-+Obdeln%C3%ADk+na+le%C5%BEato+(v%C3%BD%C5%99ez+z+obrazovky)&entry.471479550=K+-+kreslit+nov%C3%A9+uli%C4%8Dky+/+parkovi%C5%A1t%C4%9B+/+are%C3%A1ly&entry.1259126728=https://www.waze.com/cs/editor/?env=row%26lon=' + actualLon + '%26lat=' + actualLat + '%26zoom=' + getActualZoom() + '&entry.1757991414=' + me.userName, '_blank');
     });
   });
 
