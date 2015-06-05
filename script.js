@@ -6,7 +6,7 @@
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @version             0.5.1
+// @version             0.5.3
 // @grant               none
 // ==/UserScript==
 
@@ -18,7 +18,7 @@
 // - vydaná verze
 //--------------------------------------------------------------------------------------
 
-FEverze = 'Beta 0.5.2';
+FEverze = 'Beta 0.5.3';
 
 /* definice trvalých proměných */
   var ctrlPressed = false;
