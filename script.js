@@ -303,50 +303,53 @@ function freedit_init() {
   var editingHtml = '';
   var forControllHtml = '';
   var mistakesHtml = '';
-  var tipsOnShow = 0;
-  var tipsMaxShow = 7;
 
   if (onoff == "on") {
     for (var h = 0; h < konec; h++) {
-      if (FEvyprsi[h] < 21 && FEvyprsi[h] && tipsOnShow < tipsMaxShow && FEstav[h] == 0) {  //  horke tipy
+      if (FEvyprsi[h] < 14 && FEvyprsi[h] && FEstav[h] == 0) {  //  horke tipy
        if (FEvyprsi[h] < 0) { FEpro = "volný pro (L1-6)"; } else { FEpro = "chci ho (L1-2)";}  // trošku prasáren neuškodí ;)
         if (FEeditor[h] === "") {
           tipsHtml += '<i>' + FEvyprsi[h] + 'dnů </i><u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEatributy[h] + ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=1+-+P%C5%99ihl%C3%A1sit+se+k+editov%C3%A1n%C3%AD&entry.1719066620=' + me.userName + '" target="_blank">' + FEpro + '</a></u><br>';
-          tipsOnShow++;
         }
       }
 
       else if (FEstav[h] == 1) { //  prave se edituje
-        if (FEeditor[h] == me.userName) { 
-            FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=2+-+M%C3%A1m+hotovo+pros%C3%ADm+zkontrolujte&entry.1719066620=' + me.userName + '" target="_blank">odevzdat</a></u>';
-        } else {
-            FEeditlink[h] = '';
+        if (FEeditor[h] == me.userName) {
+          FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=2+-+M%C3%A1m+hotovo+pros%C3%ADm+zkontrolujte&entry.1719066620=' + me.userName + '" target="_blank">odevzdat</a></u>';
         }
+
+        else {
+          FEeditlink[h] = '';
+        }
+
         editingHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + FEeditlink[h] + '<br>';
       }
 
       else if (FEstav[h] == 2) { //  ke kontrole
-        if (me.rank >= 2) { 
-            FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1JveRTqlfQmpgvgZ_OrgZp1Twa-sXiQcBqlQ7n5NbKW0/viewform?entry.2124057902=' + FEid[h] + '&entry.1436115270=3+-+Zkontrolov%C3%A1no,+bez+v%C3%BDhrad&entry.1536264100=' + me.userName + '" target="_blank">kontrola L3+</a></u>';
-        } else {
-            FEeditlink[h] = '';
+        if (me.rank >= 2) {
+          FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1JveRTqlfQmpgvgZ_OrgZp1Twa-sXiQcBqlQ7n5NbKW0/viewform?entry.2124057902=' + FEid[h] + '&entry.1436115270=3+-+Zkontrolov%C3%A1no,+bez+v%C3%BDhrad&entry.1536264100=' + me.userName + '" target="_blank">kontrola L3+</a></u>';
         }
+
+        else {
+          FEeditlink[h] = '';
+        }
+
         forControllHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + FEeditlink[h] + '</u><br>';
       }
 
       else if (FEstav[h] == 4) { //  chyby
         mistakesHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
         if (FEeditor[h] == me.userName) {
-            if (akt != ted.getHours()) {
-                localStorage.setItem("FEakt", ted.getHours());
-                alert('Ahoj ' + FEeditor[h] + '\n\nVe Freedit ' + FEid[h] + ' byly po kontrole nalezeny chyby,\nnebo není ve stavu aby mohl být označený jako hotový\n\npro více informací zazvoň v chatu na\nJanek250 / Grepa / d2-mac\n\nnebo koukni do rozcestníku\n(odkaz je na záložce Freedit)');
-            }
+          if (akt != ted.getHours()) {
+            localStorage.setItem("FEakt", ted.getHours());
+            alert('Ahoj ' + FEeditor[h] + '\n\nVe Freedit ' + FEid[h] + ' byly po kontrole nalezeny chyby,\nnebo není ve stavu aby mohl být označený jako hotový\n\npro více informací zazvoň v chatu na\nJanek250 / Grepa / d2-mac\n\nnebo koukni do rozcestníku\n(odkaz je na záložce Freedit)');
+          }
         }
       }
     }
 
     if (tipsHtml != '') { //  pokud jsou nejake horke tipy, zobrazime
-      addon.innerHTML += '<b>Horké tipy: </b><i><font size="1">(vyprší za:)</font></i><br>' + tipsHtml;
+      addon.innerHTML += '<b>Horké tipy: </b><i><font size="1">(vyprší za:)</font></i><br><div style="width:100%;height:125px;overflow-y:scroll;">' + tipsHtml + '</div>';
     }
 
     if (editingHtml != '') { //  pokud se prave neco edituje, zobrazime to
