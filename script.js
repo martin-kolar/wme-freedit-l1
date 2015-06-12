@@ -402,7 +402,7 @@ function freedit_init() {
         }
       }
 
-      window.open('https://docs.google.com/forms/d/1Xs8J_hfjtePXo9XhymZSfJ3hiFuwYGvtmS-470ibtIE/viewform?entry.1606798517=' + cityEdit + '&entry.1257380691=' + countryEdit + '&entry.1906822446=' + countryEdit2 + '&entry.519781400=1+-+Obdeln%C3%ADk+na+le%C5%BEato+(v%C3%BD%C5%99ez+z+obrazovky)&entry.471479550=K+-+kreslit+nov%C3%A9+uli%C4%8Dky+/+parkovi%C5%A1t%C4%9B+/+are%C3%A1ly&entry.1259126728=https://www.waze.com/cs/editor/?env=row%26lon=' + actualLon + '%26lat=' + actualLat + '%26zoom=' + getActualZoom() + '&entry.1757991414=' + me.userName, '_newtab');
+      window.open('https://translate.google.com/translate?sl=cs&tl=en&js=y&prev=_t&hl=cs&ie=UTF-8&u=https%3A%2F%2Fdocs.google.com%2Fforms%2Fd%2F1Xs8J_hfjtePXo9XhymZSfJ3hiFuwYGvtmS-470ibtIE%2Fviewform%3Fentry.1606798517%3D' + cityEdit + '%26entry.1257380691%3D' + countryEdit + '%26entry.1906822446%3D' + countryEdit2 + '%26entry.519781400%3D1%2B-%2BObdeln%25C3%25ADk%2Bna%2Ble%25C5%25BEato%2B%28v%25C3%25BD%25C5%2599ez%2Bz%2Bobrazovky%29%26entry.471479550%3DK%2B-%2Bkreslit%2Bnov%25C3%25A9%2Buli%25C4%258Dky%2B%2F%2Bparkovi%25C5%25A1t%25C4%259B%2B%2F%2Bare%25C3%25A1ly%26entry.1259126728%3Dhttps%3A%2F%2Fwww.waze.com%2Fcs%2Feditor%2F%3Fenv%3Drow%2526lon%3D' + actualLon + '%2526lat%3D' + actualLat + '%2526zoom%3D' + getActualZoom() + '%26entry.1757991414%3D' + me.userName + '&edit-text=', '_newtab');
     });
   });
 
