@@ -6,19 +6,12 @@
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @version             izrael 0.5.3
+// @version             izrael 0.5.4
 // @grant               none
 // ==/UserScript==
-
-// Kopie originálního skriptu davielde/rickzabel https://greasyfork.org/cs/scripts/8443-wme-mega-mapraid-overlay
-// Skript vznikal na základě Grepovy myšlenky a velikého přispění spolutvůrců Petinka1 a d2-mac, za což moc děkuji.
-// Novikny ve verzi :
-// - ONline/OFFline
-// - opraveno předvyplňování formulář
-// - vydaná verze
 //--------------------------------------------------------------------------------------
 
-FEverze = 'Beta izrael 0.5.3';
+FEverze = 'Beta izrael 0.5.4';
 
 /* definice trvalých proměných */
   var ctrlPressed = false;
@@ -289,13 +282,14 @@ function freedit_init() {
 
   // mezera  &nbsp; /nové okno  target="_blank" /
   addon.innerHTML = '<b><u><a href="#" id="freedit-add-new">Formulář pro zadání nového</a></u></b>';
-  addon.innerHTML += '<br><u><a href="https://docs.google.com/spreadsheets/d/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/edit#gid=0" target="_blank">Tabulka</a></u></b>&nbsp<i><font size="1">(online přehled a seznam)</font></i>';
-  addon.innerHTML += '<br><u><a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">Fórum</a></u>&nbsp;<i><font size="1">(Rozcestník / chat místnost)</font></i>';
+  addon.innerHTML += '<b><br><u><a href="https://docs.google.com/spreadsheets/d/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/edit#gid=0" target="_blank">Tabulka</a></u> / (Grafy) / ';
+  addon.innerHTML += '<b><u><a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">Fórum</a></u></b>&nbsp;<i><font size="1">(Rozcestník)</font></i>';
   addon.innerHTML += '<br><b><u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1719066620=' + me.userName + '" target="_blank">Formulář k přihlášení editování</u></a></b>';
     if (me.rank >= 2) {
       addon.innerHTML += '<br><b><u><a href="https://docs.google.com/forms/d/1JveRTqlfQmpgvgZ_OrgZp1Twa-sXiQcBqlQ7n5NbKW0/viewform?entry.1436115270=3+-+Zkontrolov%C3%A1no,+bez+v%C3%BDhrad&entry.1536264100=' + me.userName + '" target="_blank">Formulář ke kontrole (L3+)</u></a></b>';  
     }
-  addon.innerHTML += '<br><i><font size="1">(změnu stavu např. ke kontrole, zkontrolováno, atd..)</font></i><br>';
+  addon.innerHTML += '<br>';
+  //addon.innerHTML += '<br><i><font size="1">(změnu stavu např. ke kontrole, zkontrolováno, atd..)</font></i><br>';
 
   if (onoff == "on") {
     addon.innerHTML += '<br>Stav: <b><u><a href="#" id="freedit-switch-on-off">ONline</a></u></b> Načteno: <b>' + konec + '</b> F';
@@ -360,7 +354,7 @@ function freedit_init() {
     }
 
     if (forControllHtml != '') { //  pokud je neco ke kontrole, zobrazime to
-      addon.innerHTML += '<br><b>Ke kontrole: </b><i><font size="1"><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform" target="_blank">(použij formulář)</u></a></font></i><br>' + forControllHtml;
+      addon.innerHTML += '<br><b>Ke kontrole: </b><br>'  + forControllHtml;
     }
 
     if (mistakesHtml != '') { //  pokud jsou nekde nejake chyby, zobrazime to
@@ -369,7 +363,7 @@ function freedit_init() {
   }
 
   addon.innerHTML += '<font size="1"><br>Legenda: <i><a href="https://www.waze.com/forum/viewtopic.php?f=22&t=136397" target="_blank"> (Script Freedit L1+ verze ' + FEverze + ')</a></i></font>';
-  addon.innerHTML += '<font size="1"><br>G - oprava geometrie <br> K - kreslit nové uličky / parkoviště / areály <br> O - kontrola odbočení / jednosměrek <br> N - kontrola názvu ulic / obce</font>'; //vytvoří odkaz v tabu a připojí proměnnou
+  addon.innerHTML += '<font size="1"><br>G - oprava geometrie<br>K - kreslit nové uličky / parkoviště<br>O - kontrola odbočení / jednosměrek<br>N - kontrola názvu ulic / obce<br>A - Areály</font>'; //vytvoří odkaz v tabu a připojí proměnnou
 
   var userTabs = getId('user-info');
   var navTabs = getElementsByClassName('nav-tabs', userTabs)[0];
@@ -408,7 +402,7 @@ function freedit_init() {
         }
       }
 
-      window.open('https://docs.google.com/forms/d/1Xs8J_hfjtePXo9XhymZSfJ3hiFuwYGvtmS-470ibtIE/viewform?entry.1606798517=' + cityEdit + '&entry.1257380691=' + countryEdit + '&entry.1906822446=' + countryEdit2 + '&entry.519781400=1+-+Obdeln%C3%ADk+na+le%C5%BEato+(v%C3%BD%C5%99ez+z+obrazovky)&entry.471479550=K+-+kreslit+nov%C3%A9+uli%C4%8Dky+/+parkovi%C5%A1t%C4%9B+/+are%C3%A1ly&entry.1259126728=https://www.waze.com/cs/editor/?env=row%26lon=' + actualLon + '%26lat=' + actualLat + '%26zoom=' + getActualZoom() + '&entry.1757991414=' + me.userName, '_blank');
+      window.open('https://docs.google.com/forms/d/1Xs8J_hfjtePXo9XhymZSfJ3hiFuwYGvtmS-470ibtIE/viewform?entry.1606798517=' + cityEdit + '&entry.1257380691=' + countryEdit + '&entry.1906822446=' + countryEdit2 + '&entry.519781400=1+-+Obdeln%C3%ADk+na+le%C5%BEato+(v%C3%BD%C5%99ez+z+obrazovky)&entry.471479550=K+-+kreslit+nov%C3%A9+uli%C4%8Dky+/+parkovi%C5%A1t%C4%9B+/+are%C3%A1ly&entry.1259126728=https://www.waze.com/cs/editor/?env=row%26lon=' + actualLon + '%26lat=' + actualLat + '%26zoom=' + getActualZoom() + '&entry.1757991414=' + me.userName, '_newtab');
     });
   });
 
