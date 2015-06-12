@@ -284,10 +284,12 @@ function freedit_init() {
   addon.innerHTML = '<b><u><a href="#" id="freedit-add-new">Formulář pro zadání nového</a></u></b>';
   addon.innerHTML += '<b><br><u><a href="https://docs.google.com/spreadsheets/d/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/edit#gid=0" target="_blank">Tabulka</a></u> / (Grafy) / ';
   addon.innerHTML += '<b><u><a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">Fórum</a></u></b>&nbsp;<i><font size="1">(Rozcestník)</font></i>';
-  addon.innerHTML += '<br><b><u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1719066620=' + me.userName + '" target="_blank">Formulář k přihlášení editování</u></a></b>';
-    if (me.rank >= 2) {
-      addon.innerHTML += '<br><b><u><a href="https://docs.google.com/forms/d/1JveRTqlfQmpgvgZ_OrgZp1Twa-sXiQcBqlQ7n5NbKW0/viewform?entry.1436115270=3+-+Zkontrolov%C3%A1no,+bez+v%C3%BDhrad&entry.1536264100=' + me.userName + '" target="_blank">Formulář ke kontrole (L3+)</u></a></b>';  
-    }
+  addon.innerHTML += '<br><b><u><a href="https://translate.google.com/translate?sl=cs&tl=en&js=y&prev=_t&hl=cs&ie=UTF-8&u=https%3A%2F%2Fdocs.google.com%2Fforms%2Fd%2F1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo%2Fviewform%3Fentry.1719066620%3D' + me.userName + '&edit-text=" target="_blank">Formulář k přihlášení editování</u></a></b>';
+
+  if (me.rank >= 2) {
+    addon.innerHTML += '<br><b><u><a href="https://translate.google.com/translate?sl=cs&tl=en&js=y&prev=_t&hl=cs&ie=UTF-8&u=https%3A%2F%2Fdocs.google.com%2Fforms%2Fd%2F1JveRTqlfQmpgvgZ_OrgZp1Twa-sXiQcBqlQ7n5NbKW0%2Fviewform%3Fentry.1436115270%3D3%2B-%2BZkontrolov%25C3%25A1no%2C%2Bbez%2Bv%25C3%25BDhrad%26entry.1536264100%3D' + me.userName + '&edit-text=" target="_blank">Formulář ke kontrole (L3+)</u></a></b>';
+  }
+
   addon.innerHTML += '<br>';
   //addon.innerHTML += '<br><i><font size="1">(změnu stavu např. ke kontrole, zkontrolováno, atd..)</font></i><br>';
 
@@ -317,7 +319,7 @@ function freedit_init() {
       }
 
       else if (FEstav[h] == 1) { //  prave se edituje
-        if (FEeditor[h] == me.userName) { 
+        if (FEeditor[h] == me.userName) {
             FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=2+-+M%C3%A1m+hotovo+pros%C3%ADm+zkontrolujte&entry.1719066620=' + me.userName + '" target="_blank">odevzdat</a></u>';
         } else {
             FEeditlink[h] = '';
