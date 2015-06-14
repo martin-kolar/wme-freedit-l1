@@ -155,7 +155,7 @@ function CurrentRaidLocation(raid_mapLayer) {
     //console.log('MapRaid: ' + raid_mapLayer.features[i].attributes.number + ': ' + raidCenterCheck);
 
     if (raidCenterCheck === true) {
-      var raidLocationLabel = 'Editorův ráj - '/* + raid_mapLayer.features[i].attributes.number + ' - '*/ + $('.WazeControlLocationInfo').text();
+      var raidLocationLabel = 'Editor\'s paradise - '/* + raid_mapLayer.features[i].attributes.number + ' - '*/ + $('.WazeControlLocationInfo').text();
 
       setTimeout(function(){
         $('.WazeControlLocationInfo').text(raidLocationLabel);
@@ -191,13 +191,13 @@ function InitMapRaidOverlay() {
 
     var Freedit01 = [{lon:b1x,lat:b1y},{lon:b2x,lat:b1y},{lon:b2x,lat:b3y},{lon:b1x,lat:b3y}];
     var FEinfo = '';
-    if(FEstav[i] == 0) {FEinfo = '\n Tento Freedit je VOLNÝ \n zbývá : ' + FEvyprsi[i] + ' dnů' + '\n' + FEatributy[i] + ' viz záložka «';}
-    if(FEstav[i] == 1) {FEinfo = '\n edituje : ' + FEeditor[i] + '\n zbývá : ' + FEvyprsi[i] + ' dnů' + '\n' + FEatributy[i] + ' viz záložka «';}
-    if(FEstav[i] == 2) {FEinfo = '\n editoval : ' + FEeditor[i] + '\n ke kontrole' + '\n' + FEatributy[i] + ' viz záložka «';}
-    if(FEstav[i] == 3) {FEinfo = '\n editoval : ' + FEeditor[i] + '\n HOTOVO, děkujeme ';}
-    if(FEstav[i] == 4) {FEinfo = '\n editoval : ' + FEeditor[i] + '\n CHYBA, více info Fórum/rozcestník.\n «« odkaz na záložce ««';}
+    if(FEstav[i] == 0) {FEinfo = '\n This freedit is free \n days left: ' + FEvyprsi[i] + '' + '\n' + FEatributy[i] + ' see bookmark «';}
+    if(FEstav[i] == 1) {FEinfo = '\n edits by: ' + FEeditor[i] + '\n deys left: ' + FEvyprsi[i] + '' + '\n' + FEatributy[i] + ' see bookmark «';}
+    if(FEstav[i] == 2) {FEinfo = '\n edited by: ' + FEeditor[i] + '\n to control' + '\n' + FEatributy[i] + ' see bookmark «';}
+    if(FEstav[i] == 3) {FEinfo = '\n edited by: ' + FEeditor[i] + '\n COMPLETE! Thanks! ';}
+    if(FEstav[i] == 4) {FEinfo = '\n edited by: ' + FEeditor[i] + '\n ERROR, more info Forum/signpost.\n «« link on bookmark ««';}
 
-    AddRaidPolygon(raid_mapLayer, Freedit01, barva[FEstav[i]], FEid[i] + '\n' + FEnazev[i] + ' (' + FEokres[i] + ')\n vložil : ' + FEvlozil[i] + FEinfo);
+    AddRaidPolygon(raid_mapLayer, Freedit01, barva[FEstav[i]], FEid[i] + '\n' + FEnazev[i] + ' (' + FEokres[i] + ')\n added by: ' + FEvlozil[i] + FEinfo);
   }
 
   setTimeout(function(){CurrentRaidLocation(raid_mapLayer);},3000);
@@ -281,22 +281,22 @@ function freedit_init() {
   var zoom = parseInt(getQueryString(href, 'zoom'));
 
   // mezera  &nbsp; /nové okno  target="_blank" /
-  addon.innerHTML = '<b><u><a href="#" id="freedit-add-new">Formulář pro zadání nového</a></u></b>';
-  addon.innerHTML += '<b><br><u><a href="https://docs.google.com/spreadsheets/d/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/edit#gid=0" target="_blank">Tabulka</a></u> / (Grafy) / ';
-  addon.innerHTML += '<b><u><a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">Fórum</a></u></b>&nbsp;<i><font size="1">(Rozcestník)</font></i>';
-  addon.innerHTML += '<br><b><u><a href="https://translate.google.com/translate?sl=cs&tl=en&js=y&prev=_t&hl=cs&ie=UTF-8&u=https%3A%2F%2Fdocs.google.com%2Fforms%2Fd%2F1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo%2Fviewform%3Fentry.1719066620%3D' + me.userName + '&edit-text=" target="_blank">Formulář k přihlášení editování</u></a></b>';
+  addon.innerHTML = '<b><u><a href="#" id="freedit-add-new">Form for new freedit</a></u></b>';
+  addon.innerHTML += '<b><br><u><a href="https://docs.google.com/spreadsheets/d/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/edit#gid=0" target="_blank">Table</a></u> / (Graphs) / ';
+  addon.innerHTML += '<b><u><a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">Forum</a></u></b>&nbsp;<i><font size="1">(Signpost)</font></i>';
+  addon.innerHTML += '<br><b><u><a href="https://translate.google.com/translate?sl=cs&tl=en&js=y&prev=_t&hl=cs&ie=UTF-8&u=https%3A%2F%2Fdocs.google.com%2Fforms%2Fd%2F1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo%2Fviewform%3Fentry.1719066620%3D' + me.userName + '&edit-text=" target="_blank">Form to register editing</u></a></b>';
 
   if (me.rank >= 2) {
-    addon.innerHTML += '<br><b><u><a href="https://translate.google.com/translate?sl=cs&tl=en&js=y&prev=_t&hl=cs&ie=UTF-8&u=https%3A%2F%2Fdocs.google.com%2Fforms%2Fd%2F1JveRTqlfQmpgvgZ_OrgZp1Twa-sXiQcBqlQ7n5NbKW0%2Fviewform%3Fentry.1436115270%3D3%2B-%2BZkontrolov%25C3%25A1no%2C%2Bbez%2Bv%25C3%25BDhrad%26entry.1536264100%3D' + me.userName + '&edit-text=" target="_blank">Formulář ke kontrole (L3+)</u></a></b>';
+    addon.innerHTML += '<br><b><u><a href="https://translate.google.com/translate?sl=cs&tl=en&js=y&prev=_t&hl=cs&ie=UTF-8&u=https%3A%2F%2Fdocs.google.com%2Fforms%2Fd%2F1JveRTqlfQmpgvgZ_OrgZp1Twa-sXiQcBqlQ7n5NbKW0%2Fviewform%3Fentry.1436115270%3D3%2B-%2BZkontrolov%25C3%25A1no%2C%2Bbez%2Bv%25C3%25BDhrad%26entry.1536264100%3D' + me.userName + '&edit-text=" target="_blank">Form of control (L3+)</u></a></b>';
   }
 
   addon.innerHTML += '<br>';
   //addon.innerHTML += '<br><i><font size="1">(změnu stavu např. ke kontrole, zkontrolováno, atd..)</font></i><br>';
 
   if (onoff == "on") {
-    addon.innerHTML += '<br>Stav: <b><u><a href="#" id="freedit-switch-on-off">ONline</a></u></b> Načteno: <b>' + konec + '</b> F';
+    addon.innerHTML += '<br>Status: <b><u><a href="#" id="freedit-switch-on-off">ONline</a></u></b> Load: <b>' + konec + '</b> F';
   } else {
-    addon.innerHTML += '<br>Stav: <b><u><a href="#" id="freedit-switch-on-off">OFFline</a></u></b> Načteno: <b>' + konec + '</b> F';
+    addon.innerHTML += '<br>Status: <b><u><a href="#" id="freedit-switch-on-off">OFFline</a></u></b> Load: <b>' + konec + '</b> F';
   }
 
   addon.innerHTML += '<br><br>';
@@ -311,16 +311,16 @@ function freedit_init() {
   if (onoff == "on") {
     for (var h = 0; h < konec; h++) {
       if (FEvyprsi[h] < 21 && FEvyprsi[h] && tipsOnShow < tipsMaxShow && FEstav[h] == 0) {  //  horke tipy
-       if (FEvyprsi[h] < 0) { FEpro = "volný pro (L1-6)"; } else { FEpro = "chci ho (L1-2)";}  // trošku prasáren neuškodí ;)
+       if (FEvyprsi[h] < 0) { FEpro = "free for (L1-6)"; } else { FEpro = "I want it (L1-2)";}  // trošku prasáren neuškodí ;)
         if (FEeditor[h] === "") {
-          tipsHtml += '<i>' + FEvyprsi[h] + 'dnů </i><u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEatributy[h] + ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=1+-+P%C5%99ihl%C3%A1sit+se+k+editov%C3%A1n%C3%AD&entry.1719066620=' + me.userName + '" target="_blank">' + FEpro + '</a></u><br>';
+          tipsHtml += '<i>' + FEvyprsi[h] + 'days </i><u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEatributy[h] + ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=1+-+P%C5%99ihl%C3%A1sit+se+k+editov%C3%A1n%C3%AD&entry.1719066620=' + me.userName + '" target="_blank">' + FEpro + '</a></u><br>';
           tipsOnShow++;
         }
       }
 
       else if (FEstav[h] == 1) { //  prave se edituje
         if (FEeditor[h] == me.userName) {
-            FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=2+-+M%C3%A1m+hotovo+pros%C3%ADm+zkontrolujte&entry.1719066620=' + me.userName + '" target="_blank">odevzdat</a></u>';
+            FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=2+-+M%C3%A1m+hotovo+pros%C3%ADm+zkontrolujte&entry.1719066620=' + me.userName + '" target="_blank">consign</a></u>';
         } else {
             FEeditlink[h] = '';
         }
@@ -329,7 +329,7 @@ function freedit_init() {
 
       else if (FEstav[h] == 2) { //  ke kontrole
         if (me.rank >= 2) { 
-            FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1JveRTqlfQmpgvgZ_OrgZp1Twa-sXiQcBqlQ7n5NbKW0/viewform?entry.2124057902=' + FEid[h] + '&entry.1436115270=3+-+Zkontrolov%C3%A1no,+bez+v%C3%BDhrad&entry.1536264100=' + me.userName + '" target="_blank">kontrola L3+</a></u>';
+            FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1JveRTqlfQmpgvgZ_OrgZp1Twa-sXiQcBqlQ7n5NbKW0/viewform?entry.2124057902=' + FEid[h] + '&entry.1436115270=3+-+Zkontrolov%C3%A1no,+bez+v%C3%BDhrad&entry.1536264100=' + me.userName + '" target="_blank">control L3+</a></u>';
         } else {
             FEeditlink[h] = '';
         }
@@ -341,31 +341,31 @@ function freedit_init() {
         if (FEeditor[h] == me.userName) {
             if (akt != ted.getHours()) {
                 localStorage.setItem("FEakt", ted.getHours());
-                alert('Ahoj ' + FEeditor[h] + '\n\nVe Freedit ' + FEid[h] + ' byly po kontrole nalezeny chyby,\nnebo není ve stavu aby mohl být označený jako hotový\n\npro více informací zazvoň v chatu na\nJanek250 / Grepa / d2-mac\n\nnebo koukni do rozcestníku\n(odkaz je na záložce Freedit)');
+                alert('Hi ' + FEeditor[h] + '\n\nIn Freedit ' + FEid[h] + ' were found errors,\nor is not in a condition to be marked as completed\n\nfor more information contact Janek250 / Grepa / d2-mac on chat\n\nor look to signpost.\n(link is on Frredit bookmark)');
             }
         }
       }
     }
 
     if (tipsHtml != '') { //  pokud jsou nejake horke tipy, zobrazime
-      addon.innerHTML += '<b>Horké tipy: </b><i><font size="1">(vyprší za:)</font></i><br>' + tipsHtml;
+      addon.innerHTML += '<b>Hot tips: </b><i><font size="1">(days left:)</font></i><br>' + tipsHtml;
     }
 
     if (editingHtml != '') { //  pokud se prave neco edituje, zobrazime to
-      addon.innerHTML += '<br><b>Edituje se: </b><i><font size="1"></font></i><br>' + editingHtml;
+      addon.innerHTML += '<br><b>Editing: </b><i><font size="1"></font></i><br>' + editingHtml;
     }
 
     if (forControllHtml != '') { //  pokud je neco ke kontrole, zobrazime to
-      addon.innerHTML += '<br><b>Ke kontrole: </b><br>'  + forControllHtml;
+      addon.innerHTML += '<br><b>For control: </b><br>'  + forControllHtml;
     }
 
     if (mistakesHtml != '') { //  pokud jsou nekde nejake chyby, zobrazime to
-      addon.innerHTML += '<br><b>Přepracovat: </b><i><font size="1"><a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">(více info Fórum/rozcestník)</a></font></i><br>' + mistakesHtml;
+      addon.innerHTML += '<br><b>rework: </b><i><font size="1"><a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">(more information Forum/signpost)</a></font></i><br>' + mistakesHtml;
     }
   }
 
-  addon.innerHTML += '<font size="1"><br>Legenda: <i><a href="https://www.waze.com/forum/viewtopic.php?f=22&t=136397" target="_blank"> (Script Freedit L1+ verze ' + FEverze + ')</a></i></font>';
-  addon.innerHTML += '<font size="1"><br>G - oprava geometrie<br>K - kreslit nové uličky / parkoviště<br>O - kontrola odbočení / jednosměrek<br>N - kontrola názvu ulic / obce<br>A - Areály</font>'; //vytvoří odkaz v tabu a připojí proměnnou
+  addon.innerHTML += '<font size="1"><br>Legend: <i><a href="https://www.waze.com/forum/viewtopic.php?f=22&t=136397" target="_blank"> (Script Freedit L1+ version ' + FEverze + ')</a></i></font>';
+  addon.innerHTML += '<font size="1"><br>G - geometry correction<br>K - draw new streets / parking lot<br>O - turn control / one-way<br>N - check street / city names<br>A - grounds</font>'; //vytvoří odkaz v tabu a připojí proměnnou
 
   var userTabs = getId('user-info');
   var navTabs = getElementsByClassName('nav-tabs', userTabs)[0];
