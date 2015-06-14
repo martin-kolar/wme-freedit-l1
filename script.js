@@ -6,12 +6,12 @@
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @version             izrael 0.5.4
+// @version             izrael 0.5.4.1
 // @grant               none
 // ==/UserScript==
 //--------------------------------------------------------------------------------------
 
-FEverze = 'Beta izrael 0.5.4';
+FEverze = 'Beta izrael 0.5.4.1';
 
 /* definice trvalých proměných */
   var ctrlPressed = false;
