@@ -305,50 +305,49 @@ function freedit_init() {
   var editingHtml = '';
   var forControllHtml = '';
   var mistakesHtml = '';
-  var tipsOnShow = 0;
-  var tipsMaxShow = 7;
 
   if (onoff == "on") {
     for (var h = 0; h < konec; h++) {
-      if (FEvyprsi[h] < 21 && FEvyprsi[h] && tipsOnShow < tipsMaxShow && FEstav[h] == 0) {  //  horke tipy
-       if (FEvyprsi[h] < 0) { FEpro = "free for (L1-6)"; } else { FEpro = "I want it (L1-2)";}  // trošku prasáren neuškodí ;)
+      if (FEvyprsi[h] < 21 && FEvyprsi[h] && FEstav[h] == 0) {  //  horke tipy
+        if (FEvyprsi[h] < 0) { FEpro = "free for (L1-6)"; } else { FEpro = "I want it (L1-2)";}  // trošku prasáren neuškodí ;)
         if (FEeditor[h] === "") {
           tipsHtml += '<i>' + FEvyprsi[h] + 'days </i><u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEatributy[h] + ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=1+-+P%C5%99ihl%C3%A1sit+se+k+editov%C3%A1n%C3%AD&entry.1719066620=' + me.userName + '" target="_blank">' + FEpro + '</a></u><br>';
-          tipsOnShow++;
         }
       }
 
       else if (FEstav[h] == 1) { //  prave se edituje
         if (FEeditor[h] == me.userName) {
-            FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=2+-+M%C3%A1m+hotovo+pros%C3%ADm+zkontrolujte&entry.1719066620=' + me.userName + '" target="_blank">consign</a></u>';
+          FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=2+-+M%C3%A1m+hotovo+pros%C3%ADm+zkontrolujte&entry.1719066620=' + me.userName + '" target="_blank">consign</a></u>';
         } else {
-            FEeditlink[h] = '';
+          FEeditlink[h] = '';
         }
+
         editingHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + FEeditlink[h] + '<br>';
       }
 
       else if (FEstav[h] == 2) { //  ke kontrole
-        if (me.rank >= 2) { 
-            FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1JveRTqlfQmpgvgZ_OrgZp1Twa-sXiQcBqlQ7n5NbKW0/viewform?entry.2124057902=' + FEid[h] + '&entry.1436115270=3+-+Zkontrolov%C3%A1no,+bez+v%C3%BDhrad&entry.1536264100=' + me.userName + '" target="_blank">control L3+</a></u>';
+        if (me.rank >= 2) {
+          FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1JveRTqlfQmpgvgZ_OrgZp1Twa-sXiQcBqlQ7n5NbKW0/viewform?entry.2124057902=' + FEid[h] + '&entry.1436115270=3+-+Zkontrolov%C3%A1no,+bez+v%C3%BDhrad&entry.1536264100=' + me.userName + '" target="_blank">control L3+</a></u>';
         } else {
-            FEeditlink[h] = '';
+          FEeditlink[h] = '';
         }
+
         forControllHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + FEeditlink[h] + '</u><br>';
       }
 
       else if (FEstav[h] == 4) { //  chyby
         mistakesHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
         if (FEeditor[h] == me.userName) {
-            if (akt != ted.getHours()) {
-                localStorage.setItem("FEakt", ted.getHours());
-                alert('Hi ' + FEeditor[h] + '\n\nIn Freedit ' + FEid[h] + ' were found errors,\nor is not in a condition to be marked as completed\n\nfor more information contact Janek250 / Grepa / d2-mac on chat\n\nor look to signpost.\n(link is on Frredit bookmark)');
-            }
+          if (akt != ted.getHours()) {
+            localStorage.setItem("FEakt", ted.getHours());
+            alert('Hi ' + FEeditor[h] + '\n\nIn Freedit ' + FEid[h] + ' were found errors,\nor is not in a condition to be marked as completed\n\nfor more information contact Janek250 / Grepa / d2-mac on chat\n\nor look to signpost.\n(link is on Frredit bookmark)');
+          }
         }
       }
     }
 
     if (tipsHtml != '') { //  pokud jsou nejake horke tipy, zobrazime
-      addon.innerHTML += '<b>Hot tips: </b><i><font size="1">(days left:)</font></i><br>' + tipsHtml;
+      addon.innerHTML += '<b>Hot tips: </b><i><font size="1">(days left:)</font></i><br><div style="width:100%;height:125px;overflow-y:scroll;">' + tipsHtml + '</div>';
     }
 
     if (editingHtml != '') { //  pokud se prave neco edituje, zobrazime to
