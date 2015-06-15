@@ -6,12 +6,12 @@
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @version             0.5.4
+// @version             0.6.1
 // @grant               none
 // ==/UserScript==
 //--------------------------------------------------------------------------------------
 
-FEverze = 'Beta 0.5.4';
+FEverze = 'Alfa 0.6.1';
 
 /* definice trvalých proměných */
   var ctrlPressed = false;
@@ -51,25 +51,28 @@ FEverze = 'Beta 0.5.4';
 if (onoff == "on") {
   console.log('WME Freedit: Start load data');
 
-  $.getJSON('https://spreadsheets.google.com/feeds/list/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/od6/public/values?alt=json', function(data) {
-    for (var i = 0; data.feed.entry[i].gsx$id.$t !== ""; i++) {
-      FEid[i] = data.feed.entry[i].gsx$id.$t;
-      FEnazev[i] = data.feed.entry[i].gsx$nazev.$t;
-      FEkraj[i] = data.feed.entry[i].gsx$kraj.$t;
-      FEokres[i] = data.feed.entry[i].gsx$okres.$t;
-      FEvlozil[i] = data.feed.entry[i].gsx$vlozil.$t;
-      FEeditor[i] = data.feed.entry[i].gsx$editor.$t;
-      FEstav[i] = data.feed.entry[i].gsx$stav.$t;
-      FEvyprsi[i] = data.feed.entry[i].gsx$vyprsi.$t;
-      FEtvar[i] = data.feed.entry[i].gsx$tvar.$t;
-      FElink[i] = data.feed.entry[i].gsx$permalink.$t;
-      FEatributy[i] = data.feed.entry[i].gsx$atribut.$t;
+  $.get('//freedit.local/getData.php', function(data) {
+    for (var i in data) {
+      FEid[i] = data[i].id;
+      FEnazev[i] = data[i].name;
+      FEkraj[i] = data[i].region;
+      FEokres[i] = data[i].district;
+      FEvlozil[i] = data[i].added_by;
+      FEeditor[i] = data[i].editor;
+      FEstav[i] = data[i].state;
+      FEvyprsi[i] = 20;
+      FEtvar[i] = data[i].shape;
+      FElon[i] = data[i].lon;
+      FElat[i] = data[i].lat;
+      FElzoom[i] = data[i].zoom;
+      FElink[i] = 'https://www.waze.com/cs/editor/?env=row&lon=' + data[i].lon + '&lat=' + data[i].lat + '&zoom=' + data[i].zoom;
+      FEatributy[i] = data[i].attrs;
       konec++;
     }
 
     console.log('WME Freedit: End load data');
     FEdataLoad = true;
-  });
+  }, 'json');
 }
 
 //Ošetření service Greasymonkey
