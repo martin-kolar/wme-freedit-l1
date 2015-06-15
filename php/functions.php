@@ -89,10 +89,17 @@ function getAttributesAsText($attr_g, $attr_k, $attr_o, $attr_n, $attr_a) {
 }
 
 function returnActualFreeditState($editor, $controlor) {
-	if ($editor['time'] > $controlor['time']) {
-		return $editor['state'];
+	if (empty($editor['time']) && empty($controlor['time'])) {
+		return 0;
+	}
+	elseif ($editor['time'] > $controlor['time']) {
+		return $editor['state']*1;
 	}
 	else {
-		return $controlor['state'];
+		return $controlor['state']*1;
 	}
+}
+
+function returnDadline($time, $deadlineLimit) {
+	return round((($time - time() + $deadlineLimit) / 86400), 0);
 }
