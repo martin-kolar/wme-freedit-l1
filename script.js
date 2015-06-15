@@ -311,13 +311,13 @@ function freedit_init() {
       if (FEvyprsi[h] < 21 && FEvyprsi[h] && FEstav[h] == 0) {  //  horke tipy
         if (FEvyprsi[h] < 0) { FEpro = "free for (L1-6)"; } else { FEpro = "I want it (L1-2)";}  // trošku prasáren neuškodí ;)
         if (FEeditor[h] === "") {
-          tipsHtml += '<i>' + FEvyprsi[h] + 'days </i><u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEatributy[h] + ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=1+-+P%C5%99ihl%C3%A1sit+se+k+editov%C3%A1n%C3%AD&entry.1719066620=' + me.userName + '" target="_blank">' + FEpro + '</a></u><br>';
+          tipsHtml += '<i>' + FEvyprsi[h] + 'days </i><u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEatributy[h] + ' &nbsp;<u><a href="https://translate.google.com/translate?sl=cs&tl=en&js=y&prev=_t&hl=cs&ie=UTF-8&u=https%3A%2F%2Fdocs.google.com%2Fforms%2Fd%2F1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo%2Fviewform%3Fentry.1410492847%3D' + FEid[h] + '%26entry.2040011150%3D1%2B-%2BP%25C5%2599ihl%25C3%25A1sit%2Bse%2Bk%2Beditov%25C3%25A1n%25C3%25AD%26entry.1719066620%3D' + me.userName + '" target="_blank">' + FEpro + '</a></u><br>';
         }
       }
 
       else if (FEstav[h] == 1) { //  prave se edituje
         if (FEeditor[h] == me.userName) {
-          FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=2+-+M%C3%A1m+hotovo+pros%C3%ADm+zkontrolujte&entry.1719066620=' + me.userName + '" target="_blank">consign</a></u>';
+          FEeditlink[h] = ' &nbsp;<u><a href="https://translate.google.com/translate?sl=cs&tl=en&js=y&prev=_t&hl=cs&ie=UTF-8&u=https%3A%2F%2Fdocs.google.com%2Fforms%2Fd%2F1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo%2Fviewform%3Fentry.1410492847%3D' + FEid[h] + '%26entry.2040011150%3D1%2B-%2BP%25C5%2599ihl%25C3%25A1sit%2Bse%2Bk%2Beditov%25C3%25A1n%25C3%25AD%26entry.1719066620%3D' + me.userName + '&edit-text=" target="_blank">consign</a></u>';
         } else {
           FEeditlink[h] = '';
         }
@@ -327,7 +327,7 @@ function freedit_init() {
 
       else if (FEstav[h] == 2) { //  ke kontrole
         if (me.rank >= 2) {
-          FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1JveRTqlfQmpgvgZ_OrgZp1Twa-sXiQcBqlQ7n5NbKW0/viewform?entry.2124057902=' + FEid[h] + '&entry.1436115270=3+-+Zkontrolov%C3%A1no,+bez+v%C3%BDhrad&entry.1536264100=' + me.userName + '" target="_blank">control L3+</a></u>';
+          FEeditlink[h] = ' &nbsp;<u><a href="https://translate.google.com/translate?hl=cs&sl=cs&tl=en&u=https%3A%2F%2Fdocs.google.com%2Fforms%2Fd%2F1JveRTqlfQmpgvgZ_OrgZp1Twa-sXiQcBqlQ7n5NbKW0%2Fviewform%3Fentry.2124057902%3D' + FEid[h] + '%26entry.1436115270%3D3%2B-%2BZkontrolov%25C3%25A1no%2C%2Bbez%2Bv%25C3%25BDhrad%26entry.1536264100%3D' + me.userName + '" target="_blank">control L3+</a></u>';
         } else {
           FEeditlink[h] = '';
         }
