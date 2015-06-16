@@ -54,46 +54,46 @@ if ($add) {
 <form id="add-new-freedit" method="post" action="<?=$url?>addFreedit.php">
 	<table>
 		<tr>
-			<td>Název:</td>
+			<td data-fe-translate="add-new-form-name"></td>
 			<td><input type="text" name="name" value="<?=$name?>" /></td>
 		</tr>
 		<tr>
-			<td>Permalink:</td>
+			<td data-fe-translate="add-new-form-permalink"></td>
 			<td><input type="text" name="link" value="<?=$link?>" /></td>
 		</tr>
 		<tr>
-			<td>Tvar:</td>
+			<td data-fe-translate="add-new-form-shape"></td>
 			<td>
-				<input type="radio" name="shape" value="1" id="add-freedit-shape-1"<?php if ($shape == 1) echo ' checked="checked"'; ?> /><label for="add-freedit-shape-1">1 - Obdelník na ležato (výřez z obrazovky)</label><br/>
-				<input type="radio" name="shape" value="2" id="add-freedit-shape-2"<?php if ($shape == 2) echo ' checked="checked"'; ?> /><label for="add-freedit-shape-2">2 - Obdelník na stojato</label><br/>
-				<input type="radio" name="shape" value="3" id="add-freedit-shape-3"<?php if ($shape == 3) echo ' checked="checked"'; ?> /><label for="add-freedit-shape-3">3 - Čtverec</label>
+				<input type="radio" name="shape" value="1" id="add-freedit-shape-1"<?php if ($shape == 1) echo ' checked="checked"'; ?> /><label for="add-freedit-shape-1" data-fe-translate="add-new-form-shape-1"></label><br/>
+				<input type="radio" name="shape" value="2" id="add-freedit-shape-2"<?php if ($shape == 2) echo ' checked="checked"'; ?> /><label for="add-freedit-shape-2" data-fe-translate="add-new-form-shape-2"></label><br/>
+				<input type="radio" name="shape" value="3" id="add-freedit-shape-3"<?php if ($shape == 3) echo ' checked="checked"'; ?> /><label for="add-freedit-shape-3" data-fe-translate="add-new-form-shape-3"></label>
 			</td>
 		</tr>
 		<tr>
-			<td>Kraj:</td>
+			<td data-fe-translate="add-new-form-region"></td>
 			<td><input type="text" name="region" value="<?=$region?>" /></td>
 		</tr>
 		<tr>
-			<td>Okres:</td>
+			<td data-fe-translate="add-new-form-district"></td>
 			<td><input type="text" name="district" value="<?=$district?>" /></td>
 		</tr>
 		<tr>
-			<td>Co je potřeba udělat:</td>
+			<td data-fe-translate="add-new-form-attr-header"></td>
 			<td>
-				<input type="checkbox" name="attrs[g]" value="1" id="add-freedit-attrs-g"<?php if (isset($attrs['g']) echo ' checked="checked"'; ?> /><label for="add-freedit-attrs-g">G - oprava geometrie</label><br/>
-				<input type="checkbox" name="attrs[k]" value="1" id="add-freedit-attrs-k"<?php if (isset($attrs['k']) echo ' checked="checked"'; ?> /><label for="add-freedit-attrs-k">K - kreslit nové uličky / parkoviště</label><br/>
-				<input type="checkbox" name="attrs[o]" value="1" id="add-freedit-attrs-o"<?php if (isset($attrs['o']) echo ' checked="checked"'; ?> /><label for="add-freedit-attrs-o">O - kontrola odbočení / jednosměrek</label><br/>
-				<input type="checkbox" name="attrs[n]" value="1" id="add-freedit-attrs-n"<?php if (isset($attrs['n']) echo ' checked="checked"'; ?> /><label for="add-freedit-attrs-n">N - kontrola názvu ulic / obce</label><br/>
-				<input type="checkbox" name="attrs[a]" value="1" id="add-freedit-attrs-a"<?php if (isset($attrs['a']) echo ' checked="checked"'; ?> /><label for="add-freedit-attrs-a">A - areál</label>
+				<input type="checkbox" name="attrs[g]" value="1" id="add-freedit-attrs-g"<?php if (isset($attrs['g'])) echo ' checked="checked"'; ?> /><label for="add-freedit-attrs-g" data-fe-translate="add-new-form-shape-g"></label><br/>
+				<input type="checkbox" name="attrs[k]" value="1" id="add-freedit-attrs-k"<?php if (isset($attrs['k'])) echo ' checked="checked"'; ?> /><label for="add-freedit-attrs-k" data-fe-translate="add-new-form-shape-k"></label><br/>
+				<input type="checkbox" name="attrs[o]" value="1" id="add-freedit-attrs-o"<?php if (isset($attrs['o'])) echo ' checked="checked"'; ?> /><label for="add-freedit-attrs-o" data-fe-translate="add-new-form-shape-o"></label><br/>
+				<input type="checkbox" name="attrs[n]" value="1" id="add-freedit-attrs-n"<?php if (isset($attrs['n'])) echo ' checked="checked"'; ?> /><label for="add-freedit-attrs-n" data-fe-translate="add-new-form-shape-n"></label><br/>
+				<input type="checkbox" name="attrs[a]" value="1" id="add-freedit-attrs-a"<?php if (isset($attrs['a'])) echo ' checked="checked"'; ?> /><label for="add-freedit-attrs-a" data-fe-translate="add-new-form-shape-a"></label>
 			</td>
 		</tr>
 		<tr>
-			<td>Vložil:</td>
+			<td data-fe-translate="add-new-form-added-by"></td>
 			<td><input type="hidden" name="added_by" value="<?=$added_by?>" /><?=$added_by?></td>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>
-			<td><input type="hidden" name="add" value="1" /><button type="submit" name="add" value="1">Přidat</button><button type="button" name="" class="fe-close-modal-window">Zavřít</button></td>
+			<td><input type="hidden" name="add" value="1" /><button type="submit" name="add" value="1" data-fe-translate="add-new-form-button"></button><button type="button" name="" class="fe-close-modal-window" data-fe-translate="modal-window-close"></button></td>
 		</tr>
 	</table>
 </form>

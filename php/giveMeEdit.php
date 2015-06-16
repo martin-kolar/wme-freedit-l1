@@ -39,24 +39,24 @@ if ($add) {
 <form id="register-freedit" method="post" action="<?=$url?>giveMeEdit.php">
 	<table>
 		<tr>
-			<td>Číslo Freeditu:</td>
+			<td data-fe-translate="register-editing-freedit-number"></td>
 			<td><input type="text" name="freedit" value="<?=$freedit?>" /></td>
 		</tr>
 		<tr>
-			<td>Editor:</td>
+			<td data-fe-translate="register-editing-editor"></td>
 			<td><input type="hidden" name="editor" value="<?=$editor?>" /><?=$editor?></td>
 		</tr>
 		<tr>
-			<td>Stav:</td>
-			<td><input type="hidden" name="state" value="<?=$state?>" /><?=($state == 1)?'1 - Přihlásit se k editování':'2 - Mám hotovo prosím zkontrolujte'; ?></td>
+			<td data-fe-translate="register-editing-state"></td>
+			<td><input type="hidden" name="state" value="<?=$state?>" /><span data-fe-translate="register-editing-freedit-state-<?=$state?>"></span></td>
 		</tr>
 		<tr>
-			<td>Komentář:</td>
+			<td data-fe-translate="register-editing-comment"></td>
 			<td><textarea name="comment"><?=$comment?></textarea></td>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>
-			<td><input type="hidden" name="add" value="1" /><button type="submit" name="add" value="1">Přidat</button><button type="button" name="" class="fe-close-modal-window">Zavřít</button></td>
+			<td><input type="hidden" name="add" value="1" /><button type="submit" name="add" value="1" data-fe-translate="register-editing-button"></button><button type="button" name="" class="fe-close-modal-window" data-fe-translate="modal-window-close"></button></td>
 		</tr>
 	</table>
 </form>

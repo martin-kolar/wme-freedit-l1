@@ -39,27 +39,27 @@ if ($add) {
 <form id="register-freedit" method="post" action="<?=$url?>giveMeEdit.php">
 	<table>
 		<tr>
-			<td>Číslo Freeditu:</td>
+			<td data-fe-translate="control-message-freedit-number"></td>
 			<td><input type="text" name="freedit" value="<?=$freedit?>" /></td>
 		</tr>
 		<tr>
-			<td>Editor:</td>
+			<td data-fe-translate="control-message-editor"></td>
 			<td><input type="hidden" name="editor" value="<?=$editor?>" /><?=$editor?></td>
 		</tr>
 		<tr>
-			<td>Stav:</td>
+			<td data-fe-translate="control-message-state"></td>
 			<td>
-				<input type="radio" name="state" value="3" id="control-freedit-state-3"<? if ($state == 3) echo ' checked="checked"'; ?> /><label for="control-freedit-state-3">3 - Zkontrolováno, bez výhrad</label><br/>
-				<input type="radio" name="state" value="4" id="control-freedit-state-4"<? if ($state == 4) echo ' checked="checked"'; ?> /><label for="control-freedit-state-4">4 - Nedostatky, nutná oprava</label>
+				<input type="radio" name="state" value="3" id="control-freedit-state-3"<? if ($state == 3) echo ' checked="checked"'; ?> /><label for="control-freedit-state-3" data-fe-translate="control-message-state-3"></label><br/>
+				<input type="radio" name="state" value="4" id="control-freedit-state-4"<? if ($state == 4) echo ' checked="checked"'; ?> /><label for="control-freedit-state-4" data-fe-translate="control-message-state-4"></label>
 			</td>
 		</tr>
 		<tr>
-			<td>Komentář:</td>
+			<td data-fe-translate="control-message-comment"></td>
 			<td><textarea name="comment"><?=$comment?></textarea></td>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>
-			<td><input type="hidden" name="add" value="1" /><button type="submit" name="add" value="1">Přidat</button><button type="button" name="" class="fe-close-modal-window">Zavřít</button></td>
+			<td><input type="hidden" name="add" value="1" /><button type="submit" name="add" value="1" data-fe-translate="register-editing-freedit-number"></button><button type="button" name="" class="fe-close-modal-window" data-fe-translate="modal-window-close">Zavřít</button></td>
 		</tr>
 	</table>
 </form>
