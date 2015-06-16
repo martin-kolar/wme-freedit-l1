@@ -6,12 +6,12 @@
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @version             0.5.5
+// @version             0.5.6
 // @grant               none
 // ==/UserScript==
 //--------------------------------------------------------------------------------------
 
-FEverze = 'Beta 0.5.5';
+FEverze = 'Beta 0.5.6';
 
 /* definice trvalých proměných */
   var ctrlPressed = false;
@@ -180,32 +180,25 @@ function InitMapRaidOverlay() {
   // ***
   // Načtení stavu vrstvy zobrazena/skryta
   //
-    
+
   // defaultně je vrstva zapnutá
   var FEvisible = true;
-  
+
   // načte poslední uložený stav zobrazení vrstvy z localstorage
-  if (localStorage) {      
-    var options = JSON.parse(localStorage.getItem("WMEFreedit"));
-    
-    FEvisible = options[0];
+  if (localStorage) {
+    FEvisible = localStorage.getItem("FE_visibility");
     console.log("WME Freedit: Options loaded.");
   }
-  
+
  // uložení stavu zobrazení vrstvy při exitu WME
   saveOptions = function() {
     if (localStorage) {
-      var options = [];
-      
-      FEvisible = raid_mapLayer.visibility;
-      options[0] = FEvisible;
-      
-      localStorage.setItem("WMEFreedit", JSON.stringify(options));
+      localStorage.setItem("FE_visibility", raid_mapLayer.visibility);
       console.log("WME Freedit: Options saved.");
     }
   }
   window.addEventListener("beforeunload", saveOptions, false);
-      
+
   // zobrazení nebo skrytí vrstvy podle posledního uloženého stavu
   raid_mapLayer.setVisibility(FEvisible);
 
