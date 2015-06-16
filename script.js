@@ -212,7 +212,40 @@ function InitMapRaidOverlay() {
 
   I18n.translations.en.layers.name['Freedit L1+'] = 'Freedit L1+';
   mro_Map.addLayer(raid_mapLayer);
-  raid_mapLayer.setVisibility(true);
+
+
+  // ***
+  // Načtení stavu vrstvy zobrazena/skryta
+  //
+
+  // defaultně je vrstva zapnutá
+  var FE_visible = true;
+
+  // načte poslední uložený stav zobrazení vrstvy z localstorage
+  if (localStorage) {
+    var options = JSON.parse(localStorage.getItem("FE_options"));
+
+    FE_visible = options[0];
+    console.log("WME Freedit: Options loaded.");
+  }
+
+ // uložení stavu zobrazení vrstvy při exitu WME
+  saveOptions = function() {
+    if (localStorage) {
+      var options = [];
+
+      FE_visible = raid_mapLayer.visibility;
+      options[0] = FE_visible;
+
+      localStorage.setItem("FE_options", JSON.stringify(options));
+      console.log("WME Freedit: Options saved.");
+    }
+  }
+
+  window.addEventListener("beforeunload", saveOptions, false);
+
+  // zobrazení nebo skrytí vrstvy podle posledního uloženého stavu
+  raid_mapLayer.setVisibility(FE_visible);
 
   for (var i in FE_data) {
     if (typeof FE_data[i] == 'object') {
