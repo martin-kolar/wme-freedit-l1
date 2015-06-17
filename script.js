@@ -6,12 +6,12 @@
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @version             0.5.6
+// @version             0.5.6.1
 // @grant               none
 // ==/UserScript==
 //--------------------------------------------------------------------------------------
 
-FEverze = 'Beta 0.5.6';
+FEverze = 'Beta 0.5.6.1';
 
 /* definice trvalých proměných */
   var ctrlPressed = false;
@@ -185,7 +185,7 @@ function InitMapRaidOverlay() {
   var FEvisible = true;
 
   // načte poslední uložený stav zobrazení vrstvy z localstorage
-  if (localStorage) {
+  if (localStorage && localStorage.getItem("FE_visibility") != '') {
     FEvisible = localStorage.getItem("FE_visibility");
     console.log("WME Freedit: Options loaded.");
   }
