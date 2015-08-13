@@ -40,10 +40,10 @@ FE_version = 'Alfa 0.6.1';
   }
 
   var FE_linksSettings = {
-    'add_new': '//freedit.local/addFreedit.php?name={name}&link={link}&region={region}&district={district}&added_by={added_by}',
-    'register_freedit': '//freedit.local/giveMeEdit.php?editor={editor}&state=1&freedit={freedit}',
-    'send_freedit_to_control': '//freedit.local/giveMeEdit.php?editor={editor}&state=2&freedit={freedit}',
-    'send_control_report': '//freedit.local/sendControlMessage.php?freedit={freedit}&editor={editor}'
+    'add_new': '//www.wazer.cz/f/addFreedit.php?name={name}&link={link}&region={region}&district={district}&added_by={added_by}',
+    'register_freedit': '//www.wazer.cz/f/giveMeEdit.php?editor={editor}&state=1&freedit={freedit}',
+    'send_freedit_to_control': '//www.wazer.cz/f/giveMeEdit.php?editor={editor}&state=2&freedit={freedit}',
+    'send_control_report': '//www.wazer.cz/f/sendControlMessage.php?freedit={freedit}&editor={editor}'
   };
 
   //  language settings
@@ -156,7 +156,7 @@ FE_version = 'Alfa 0.6.1';
 if (FE_status == 'on') {
   console.log('WME Freedit: Start load data');
 
-  $.get('//freedit.local/getData.php', function(data) {
+  $.get('//www.wazer.cz/f/getData.php', function(data) {
     for (var i in data) {
       FE_data[data[i].id] = data[i];
     }
@@ -479,10 +479,10 @@ function freedit_make_tab() {
         + '<a href="https://docs.google.com/spreadsheets/d/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/edit#gid=0" target="_blank">' + fe_t('tab_freedit_table') + '</a>'
         + ' / (' + fe_t('tab_graphs') + ') / '
         + '<a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">' + fe_t('tab_forum') + '</a> <font size="1">(' + fe_t('tab_signpost') + ')</font><br />'
-        + '<a href="#" class="freedit-register">' + fe_t('tab_form_for_register_editing') + '</a>';
+        + '<a href="#" class="freedit-register" data-freedit-id="">' + fe_t('tab_form_for_register_editing') + '</a>';
 
   if (me.rank >= 2) {
-    tCon += '<br /><br /><a href="https://docs.google.com/forms/d/1JveRTqlfQmpgvgZ_OrgZp1Twa-sXiQcBqlQ7n5NbKW0/viewform?entry.1436115270=3+-+Zkontrolov%C3%A1no,+bez+v%C3%BDhrad&entry.1536264100=' + me.userName + '" target="_blank">' + fe_t('tab_control_form_l3') + '</a>';
+    tCon += '<br /><br /><a href="#" class="freedit-control-message" data-freedit-id="" target="_blank">' + fe_t('tab_control_form_l3') + '</a>';
   }
 
   if (FE_status == 'on') {

@@ -24,7 +24,7 @@ if ($add) {
 			'ip' => $ip
 		);
 
-		if (DB::vloz('editors_insert', $data)) {
+		if (DB::vloz($dbPrefix . 'editors_insert', $data)) {
 			echo json_encode(array('error' => 0));
 			exit;
 		}

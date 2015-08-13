@@ -24,7 +24,7 @@ if ($add) {
 			'ip' => $ip
 		);
 
-		if (DB::vloz('controlors_insert', $data)) {
+		if (DB::vloz($dbPrefix . 'controlors_insert', $data)) {
 			echo json_encode(array('error' => 0));
 			exit;
 		}
@@ -36,7 +36,7 @@ if ($add) {
 }
 
 ?>
-<form id="register-freedit" method="post" action="<?=$url?>giveMeEdit.php">
+<form id="register-freedit" method="post" action="<?=$url?>sendControlMessage.php">
 	<table>
 		<tr>
 			<td data-fe-translate="control-message-freedit-number"></td>

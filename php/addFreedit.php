@@ -39,7 +39,7 @@ if ($add) {
 			'ip' => $ip
 		);
 
-		if (DB::vloz('freedit', $data)) {
+		if (DB::vloz($dbPrefix . 'freedit', $data)) {
 			echo json_encode(array('error' => 0));
 			exit;
 		}

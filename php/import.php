@@ -7,7 +7,7 @@ if (isset($_GET['file'])) {
 
 		//	import freedit table
 
-		$deleted = DB::dotaz("DELETE FROM `freedit`");
+		$deleted = DB::dotaz('DELETE FROM `' . $dbPrefix . 'freedit`');
 		echo 'Deleted freedit rows: ' . $deleted . '<br />';
 
 		$import = file_get_contents('import/freedit_' . $_GET['file']);
@@ -37,7 +37,7 @@ if (isset($_GET['file'])) {
 					'shape' => substr($v[13], 0, 1)
 				);
 
-				if (DB::vloz('freedit', $data)) {
+				if (DB::vloz($dbPrefix . 'freedit', $data)) {
 					$i++;
 				}
 				else {
@@ -52,7 +52,7 @@ if (isset($_GET['file'])) {
 
 		//	import editors table
 
-		$deleted = DB::dotaz("DELETE FROM `editors_insert`");
+		$deleted = DB::dotaz('DELETE FROM `' . $dbPrefix . 'editors_insert`');
 		echo 'Deleted editors rows: ' . $deleted . '<br />';
 		$insertTable = array();
 
@@ -75,7 +75,7 @@ if (isset($_GET['file'])) {
 
 				$insertTable[] = $data;
 
-				if (DB::vloz('editors_insert', $data)) {
+				if (DB::vloz($dbPrefix . 'editors_insert', $data)) {
 					$i++;
 				}
 				else {
@@ -90,7 +90,7 @@ if (isset($_GET['file'])) {
 
 		//	import controlors table
 
-		$deleted = DB::dotaz("DELETE FROM `controlors_insert`");
+		$deleted = DB::dotaz('DELETE FROM `' . $dbPrefix . 'controlors_insert`');
 		echo 'Deleted controlors rows: ' . $deleted . '<br />';
 
 		$import = file_get_contents('import/controlors_' . $_GET['file']);
@@ -112,7 +112,7 @@ if (isset($_GET['file'])) {
 
 				$insertTable[] = $data;
 
-				if (DB::vloz('controlors_insert', $data)) {
+				if (DB::vloz($dbPrefix . 'controlors_insert', $data)) {
 					$i++;
 				}
 				else {
@@ -127,10 +127,10 @@ if (isset($_GET['file'])) {
 
 		//	load data into insert table
 
-		$deleted = DB::dotaz("DELETE FROM `insert`");
+		$deleted = DB::dotaz('DELETE FROM `' . $dbPrefix . 'insert`');
 
 		foreach ($insertTable as $v) {
-			DB::vloz('insert', $v);
+			DB::vloz($dbPrefix . 'insert', $v);
 		}
 	}
 }
