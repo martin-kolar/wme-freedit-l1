@@ -1,17 +1,17 @@
 // ==UserScript==
 // @name                Beta-Freedit L1+
 // @namespace           https://greasyfork.org/users/10038-janek250
-// @author              Janek250 & Martin Kolář
+// @author              Janek250 & Martin Kolář & krizecek
 // @description         Vrstva míst úprav pro nováčky Freedit L1+
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @version             0.5.4
+// @version             0.5.5
 // @grant               none
 // ==/UserScript==
 //--------------------------------------------------------------------------------------
 
-FEverze = 'Beta 0.5.4';
+FEverze = 'Beta 0.5.5';
 
 /* definice trvalých proměných */
   var ctrlPressed = false;
@@ -284,9 +284,9 @@ function freedit_init() {
   addon.innerHTML = '<b><u><a href="#" id="freedit-add-new">Formulář pro zadání nového</a></u></b>';
   addon.innerHTML += '<b><br><u><a href="https://docs.google.com/spreadsheets/d/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/edit#gid=0" target="_blank">Tabulka</a></u> / (Grafy) / ';
   addon.innerHTML += '<b><u><a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">Fórum</a></u></b>&nbsp;<i><font size="1">(Rozcestník)</font></i>';
-  addon.innerHTML += '<br><b><u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1719066620=' + me.userName + '" target="_blank">Formulář k přihlášení editování</u></a></b>';
-    if (me.rank >= 2) {
-      addon.innerHTML += '<br><b><u><a href="https://docs.google.com/forms/d/1JveRTqlfQmpgvgZ_OrgZp1Twa-sXiQcBqlQ7n5NbKW0/viewform?entry.1436115270=3+-+Zkontrolov%C3%A1no,+bez+v%C3%BDhrad&entry.1536264100=' + me.userName + '" target="_blank">Formulář ke kontrole (L3+)</u></a></b>';  
+  addon.innerHTML += '<br><b><u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1719066620=' + Waze.loginManager.user.userName + '" target="_blank">Formulář k přihlášení editování</u></a></b>';
+    if (Waze.loginManager.user.rank >= 2) {
+      addon.innerHTML += '<br><b><u><a href="https://docs.google.com/forms/d/1JveRTqlfQmpgvgZ_OrgZp1Twa-sXiQcBqlQ7n5NbKW0/viewform?entry.1436115270=3+-+Zkontrolov%C3%A1no,+bez+v%C3%BDhrad&entry.1536264100=' + Waze.loginManager.user.userName + '" target="_blank">Formulář ke kontrole (L3+)</u></a></b>';  
     }
   addon.innerHTML += '<br>';
   //addon.innerHTML += '<br><i><font size="1">(změnu stavu např. ke kontrole, zkontrolováno, atd..)</font></i><br>';
@@ -311,14 +311,14 @@ function freedit_init() {
       if (FEvyprsi[h] < 21 && FEvyprsi[h] && tipsOnShow < tipsMaxShow && FEstav[h] == 0) {  //  horke tipy
        if (FEvyprsi[h] < 0) { FEpro = "volný pro (L1-6)"; } else { FEpro = "chci ho (L1-2)";}  // trošku prasáren neuškodí ;)
         if (FEeditor[h] === "") {
-          tipsHtml += '<i>' + FEvyprsi[h] + 'dnů </i><u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEatributy[h] + ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=1+-+P%C5%99ihl%C3%A1sit+se+k+editov%C3%A1n%C3%AD&entry.1719066620=' + me.userName + '" target="_blank">' + FEpro + '</a></u><br>';
+          tipsHtml += '<i>' + FEvyprsi[h] + 'dnů </i><u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEatributy[h] + ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=1+-+P%C5%99ihl%C3%A1sit+se+k+editov%C3%A1n%C3%AD&entry.1719066620=' + Waze.loginManager.user.userName + '" target="_blank">' + FEpro + '</a></u><br>';
           tipsOnShow++;
         }
       }
 
       else if (FEstav[h] == 1) { //  prave se edituje
-        if (FEeditor[h] == me.userName) { 
-            FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=2+-+M%C3%A1m+hotovo+pros%C3%ADm+zkontrolujte&entry.1719066620=' + me.userName + '" target="_blank">odevzdat</a></u>';
+        if (FEeditor[h] == Waze.loginManager.user.userName) { 
+            FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1fVT1LuYThOO8zvlsAyMtzNrUh1coDsz5muv--quIFAo/viewform?entry.1410492847=' + FEid[h] + '&entry.2040011150=2+-+M%C3%A1m+hotovo+pros%C3%ADm+zkontrolujte&entry.1719066620=' + Waze.loginManager.user.userName + '" target="_blank">odevzdat</a></u>';
         } else {
             FEeditlink[h] = '';
         }
@@ -326,8 +326,8 @@ function freedit_init() {
       }
 
       else if (FEstav[h] == 2) { //  ke kontrole
-        if (me.rank >= 2) { 
-            FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1JveRTqlfQmpgvgZ_OrgZp1Twa-sXiQcBqlQ7n5NbKW0/viewform?entry.2124057902=' + FEid[h] + '&entry.1436115270=3+-+Zkontrolov%C3%A1no,+bez+v%C3%BDhrad&entry.1536264100=' + me.userName + '" target="_blank">kontrola L3+</a></u>';
+        if (Waze.loginManager.user.rank >= 2) { 
+            FEeditlink[h] = ' &nbsp;<u><a href="https://docs.google.com/forms/d/1JveRTqlfQmpgvgZ_OrgZp1Twa-sXiQcBqlQ7n5NbKW0/viewform?entry.2124057902=' + FEid[h] + '&entry.1436115270=3+-+Zkontrolov%C3%A1no,+bez+v%C3%BDhrad&entry.1536264100=' + Waze.loginManager.user.userName + '" target="_blank">kontrola L3+</a></u>';
         } else {
             FEeditlink[h] = '';
         }
@@ -336,7 +336,7 @@ function freedit_init() {
 
       else if (FEstav[h] == 4) { //  chyby
         mistakesHtml += '<u><a href="' + FElink[h] + '" class="freedit-link">Freedit ' + FEid[h] + '</a></u> ' + FEeditor[h]+ ' : ' + FEatributy[h] + '</u><br>';
-        if (FEeditor[h] == me.userName) {
+        if (FEeditor[h] == Waze.loginManager.user.userName) {
             if (akt != ted.getHours()) {
                 localStorage.setItem("FEakt", ted.getHours());
                 alert('Ahoj ' + FEeditor[h] + '\n\nVe Freedit ' + FEid[h] + ' byly po kontrole nalezeny chyby,\nnebo není ve stavu aby mohl být označený jako hotový\n\npro více informací zazvoň v chatu na\nJanek250 / Grepa / d2-mac\n\nnebo koukni do rozcestníku\n(odkaz je na záložce Freedit)');
@@ -402,7 +402,7 @@ function freedit_init() {
         }
       }
 
-      window.open('https://docs.google.com/forms/d/1Xs8J_hfjtePXo9XhymZSfJ3hiFuwYGvtmS-470ibtIE/viewform?entry.1606798517=' + cityEdit + '&entry.1257380691=' + countryEdit + '&entry.1906822446=' + countryEdit2 + '&entry.519781400=1+-+Obdeln%C3%ADk+na+le%C5%BEato+(v%C3%BD%C5%99ez+z+obrazovky)&entry.471479550=K+-+kreslit+nov%C3%A9+uli%C4%8Dky+/+parkovi%C5%A1t%C4%9B+/+are%C3%A1ly&entry.1259126728=https://www.waze.com/cs/editor/?env=row%26lon=' + actualLon + '%26lat=' + actualLat + '%26zoom=' + getActualZoom() + '&entry.1757991414=' + me.userName, '_newtab');
+      window.open('https://docs.google.com/forms/d/1Xs8J_hfjtePXo9XhymZSfJ3hiFuwYGvtmS-470ibtIE/viewform?entry.1606798517=' + cityEdit + '&entry.1257380691=' + countryEdit + '&entry.1906822446=' + countryEdit2 + '&entry.519781400=1+-+Obdeln%C3%ADk+na+le%C5%BEato+(v%C3%BD%C5%99ez+z+obrazovky)&entry.471479550=K+-+kreslit+nov%C3%A9+uli%C4%8Dky+/+parkovi%C5%A1t%C4%9B+/+are%C3%A1ly&entry.1259126728=https://www.waze.com/cs/editor/?env=row%26lon=' + actualLon + '%26lat=' + actualLat + '%26zoom=' + getActualZoom() + '&entry.1757991414=' + Waze.loginManager.user.userName, '_newtab');
     });
   });
 
@@ -430,7 +430,7 @@ function freedit_init() {
 
 //fce wait co volá freedit_init
 function freedit_wait() {
-  if (!window.Waze.map || typeof me == 'undefined' || typeof map == 'undefined') {
+  if (!window.Waze.map || typeof map == 'undefined') {
     setTimeout(freedit_wait, 500);
   } else {
     hasStates = Waze.model.hasStates();
