@@ -47,12 +47,12 @@ FE_version = 'Alfa 0.6.1';
   };
 
   //  language settings
-  var FE_allowLanguage = ['cs_CZ', 'en_EN'];
-  var FE_language = 'en_EN';  //  default language
+  var FE_allowLanguage = ['cs', 'en'];
+  var FE_language = 'en';  //  default language
   var FE_translation = [];
 
   //  cs translation
-  FE_translation['cs_CZ'] = {
+  FE_translation['cs'] = {
     'link': 'https://www.waze.com/cs/editor/?env=row&lon={lon}&lat={lat}&zoom={zoom}',
     'map_layer_state_0': 'Freedit: {id}\n{name} ({district})\nVložil: {added_by}\nTento Freedit je VOLNÝ \n zbývá: {days_left} dnů \n {attrs} viz záložka «',
     'map_layer_state_1': 'Freedit: {id}\n{name} ({district})\nVložil: {added_by}\nEdituje: {editor}\n zbývá: {days_left} dnů\n{attrs} viz záložka «',
@@ -130,7 +130,7 @@ FE_version = 'Alfa 0.6.1';
   };
 
   //  en translation
-  FE_translation['en_EN'] = {
+  FE_translation['en'] = {
 
   };
 
@@ -767,7 +767,7 @@ function freedit_init() {
 
 //fce wait co volá freedit_init
 function freedit_wait() {
-  if (!window.Waze.map || typeof me == 'undefined' || typeof map == 'undefined' || typeof wazeLocation == 'undefined') {
+  if (!window.Waze.map || typeof me == 'undefined' || typeof map == 'undefined') {
     setTimeout(freedit_wait, 500);
   } else {
     hasStates = Waze.model.hasStates();
@@ -786,8 +786,8 @@ function feedit_after_load_data() {
   if (FE_dataLoad) {
     console.log('WME Freedit: Start showing layer');
 
-    if (jQuery.inArray(wazeLocation.locale, FE_allowLanguage) !== false) {  //  set same language as in editor
-      FE_language = wazeLocation.locale;
+    if (FE_allowLanguage.indexOf(I18n.locale) != -1) {
+      FE_language = I18n.locale;
     }
 
     freedit_init();
