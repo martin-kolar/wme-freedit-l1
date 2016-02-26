@@ -20,6 +20,7 @@ FE_version = 'Alfa 0.6.1';
   var FE_dataCount = 0;
   var FE_colors = ['#00BBFF', '#FFAE00', '#FFFF00', '#5E8F47', '#FF0000']; //HTML barvy modrá = #00BBFF oranžová = #FFAE00 žlutá = #FFFF00 zelená = #5E8F47 červená = #FF0000
   var FE_date = new Date();
+  var Fe_me = null;
 
   var FE_alertsDataMistakes = localStorage.getItem('FE_alertsDataMistakes');
   if (typeof FE_alertsDataMistakes != 'string') {
@@ -164,6 +165,7 @@ if (FE_status == 'on') {
     FE_dataCount = FE_data.length;
     console.log('WME Freedit: End load data');
     FE_dataLoad = true;
+    console.log(FE_data);
   }, 'json');
 }
 
@@ -192,8 +194,8 @@ function freedit_bootstrap() {
 
 //definování funkce a vzhled polygonu
 function AddRaidPolygon(raidLayer, groupPoints, groupColor, groupNumber) {
-  mro_Map = unsafeWindow.Waze.map;
-  mro_OL = unsafeWindow.OpenLayers;
+  mro_Map = Waze.map;
+  mro_OL = OpenLayers;
   groupName = 'RaidGroup' + groupNumber;
 
   style = { //nastavení vzhledu polygonu
@@ -239,7 +241,7 @@ function getQueryString(link, name) {
 
 //funkce MMR??
 function CurrentRaidLocation(raid_mapLayer) {
-  mro_Map = unsafeWindow.Waze.map;
+  mro_Map = Waze.map;
 
   for(i = 0; i < raid_mapLayer.features.length; i++){
     raidMapCenter = mro_Map.getCenter();
@@ -258,8 +260,8 @@ function CurrentRaidLocation(raid_mapLayer) {
 
 //funkce inicializace MMR??
 function InitMapRaidOverlay() {
-  mro_Map = unsafeWindow.Waze.map;
-  mro_OL = unsafeWindow.OpenLayers;
+  mro_Map = Waze.map;
+  mro_OL = OpenLayers;
   mro_mapLayers = mro_Map.getLayersBy('uniqueName','Freedit L1+');
   raid_mapLayer = new mro_OL.Layer.Vector('Freedit L1+', {
     displayInLayerSwitcher: true,
@@ -481,7 +483,7 @@ function freedit_make_tab() {
         + '<a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">' + fe_t('tab_forum') + '</a> <font size="1">(' + fe_t('tab_signpost') + ')</font><br />'
         + '<a href="#" class="freedit-register" data-freedit-id="">' + fe_t('tab_form_for_register_editing') + '</a>';
 
-  if (me.rank >= 2) {
+  if (Fe_me.rank >= 2) {
     tCon += '<br /><br /><a href="#" class="freedit-control-message" data-freedit-id="" target="_blank">' + fe_t('tab_control_form_l3') + '</a>';
   }
 
@@ -493,7 +495,7 @@ function freedit_make_tab() {
         case 0:
           if (FE_data[i].deadline < 14 && FE_data[i].deadline) {
             FE_for_users = ' <a href="#" class="freedit-register" data-freedit-id="' + FE_data[i].id + '">' + ((FE_data[i].deadline < 0) ? fe_t('tab_free_for_all') : fe_t('tab_free_for_l1_2')) + '</a>';
-            FE_tipsHtml += fe_t('tab_hot_tips_link', {'deadline': FE_data[i].deadline, 'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'attrs': FE_data[i].attrs, 'user': me.userName, 'for_users': FE_for_users});
+            FE_tipsHtml += fe_t('tab_hot_tips_link', {'deadline': FE_data[i].deadline, 'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'attrs': FE_data[i].attrs, 'user': Fe_me.userName, 'for_users': FE_for_users});
             FE_tipsHtml += '<br />';
           }
 
@@ -501,26 +503,26 @@ function freedit_make_tab() {
 
         case 1:
           FE_editingHtml += fe_t('tab_editing_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'editor': FE_data[i].editor, 'attrs': FE_data[i].attrs});
-          FE_editingHtml += ((FE_data[i].editor == me.userName) ? ' <a href="#" class="freedit-to-control" data-freedit-id="' + FE_data[i].id + '">' + fe_t('tab_editing_link_own') + '</a>' : '');
+          FE_editingHtml += ((FE_data[i].editor == Fe_me.userName) ? ' <a href="#" class="freedit-to-control" data-freedit-id="' + FE_data[i].id + '">' + fe_t('tab_editing_link_own') + '</a>' : '');
           FE_editingHtml += '<br />';
           break;
 
         case 2:
           FE_forControllHtml += fe_t('tab_control_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'editor': FE_data[i].editor, 'attrs': FE_data[i].attrs});
-          FE_forControllHtml += ((me.rank >= 2) ? ' <a href="#" class="freedit-control-message" data-freedit-id="' + FE_data[i].id + '">' + fe_t('tab_control_link_l3') + '</a>' : '');
+          FE_forControllHtml += ((Fe_me.rank >= 2) ? ' <a href="#" class="freedit-control-message" data-freedit-id="' + FE_data[i].id + '">' + fe_t('tab_control_link_l3') + '</a>' : '');
           FE_forControllHtml += '<br />';
           break;
 
         case 3:
-          if (FE_data[i].editor == me.userName && typeof FE_alertsDataComplete[FE_data[i].id] == 'undefined') {
+          if (FE_data[i].editor == Fe_me.userName && typeof FE_alertsDataComplete[FE_data[i].id] == 'undefined') {
             FE_alertsDataComplete[FE_data[i].id] = 1;
             localStorage.setItem('FE_alertsDataComplete', FE_alertsDataComplete.join(','));
 
             if (FE_data[i].comment != '') {
-              alert(fe_t('alert_complete_with_comment', {'editor': me.userName, 'id': FE_data[i].id, 'comment': FE_data[i].comment}));
+              alert(fe_t('alert_complete_with_comment', {'editor': Fe_me.userName, 'id': FE_data[i].id, 'comment': FE_data[i].comment}));
             }
             else {
-              alert(fe_t('alert_complete_without_comment', {'editor': me.userName, 'id': FE_data[i].id}));
+              alert(fe_t('alert_complete_without_comment', {'editor': Fe_me.userName, 'id': FE_data[i].id}));
             }
           }
           break;
@@ -528,15 +530,15 @@ function freedit_make_tab() {
         case 4:
           FE_mistakesHtml += fe_t('tab_mistake_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'editor': FE_data[i].editor, 'attrs': FE_data[i].attrs});
 
-          if (FE_data[i].editor == me.userName && FE_alertsDataMistakes[FE_data[i].id]*1 != FE_date.getHours()) {
+          if (FE_data[i].editor == Fe_me.userName && FE_alertsDataMistakes[FE_data[i].id]*1 != FE_date.getHours()) {
             FE_alertsDataMistakes[FE_data[i].id] = FE_date.getHours();
             localStorage.setItem('FE_alertsDataMistakes', FE_alertsDataMistakes.join(','));
 
             if (FE_data[i].comment != '') {
-              alert(fe_t('alert_mistake_with_comment', {'editor': me.userName, 'id': FE_data[i].id, 'comment': FE_data[i].comment}));
+              alert(fe_t('alert_mistake_with_comment', {'editor': Fe_me.userName, 'id': FE_data[i].id, 'comment': FE_data[i].comment}));
             }
             else {
-              alert(fe_t('alert_mistake_without_comment', {'editor': me.userName, 'id': FE_data[i].id}));
+              alert(fe_t('alert_mistake_without_comment', {'editor': Fe_me.userName, 'id': FE_data[i].id}));
             }
           }
           break;
@@ -622,7 +624,7 @@ function freedit_add_new() {
       }
     }
 
-    $.get(fe_l('add_new', {'name': cityEdit, 'link': prepareLinkForSend(returnWazeLink(actualLon, actualLat, getActualZoom())), 'region': countryEdit, 'district': countryEdit2, 'added_by': me.userName}), function(data) {
+    $.get(fe_l('add_new', {'name': cityEdit, 'link': prepareLinkForSend(returnWazeLink(actualLon, actualLat, getActualZoom())), 'region': countryEdit, 'district': countryEdit2, 'added_by': Fe_me.userName}), function(data) {
       freedit_make_modal_window(data);
       freedit_form_translator();
 
@@ -650,7 +652,7 @@ function freedit_register_editing($el) {
     FE_freedit_id = $el.attr('data-freedit-id');
   }
 
-  $.get(fe_l('register_freedit', {'editor': me.userName, 'freedit': FE_freedit_id}), function(data) {
+  $.get(fe_l('register_freedit', {'editor': Fe_me.userName, 'freedit': FE_freedit_id}), function(data) {
     freedit_make_modal_window(data);
     freedit_form_translator();
 
@@ -671,7 +673,7 @@ function freedit_register_editing($el) {
 }
 
 function freedit_send_to_control($el) {
-  $.get(fe_l('send_freedit_to_control', {'editor': me.userName, 'freedit': $el.attr('data-freedit-id')}), function(data) {
+  $.get(fe_l('send_freedit_to_control', {'editor': Fe_me.userName, 'freedit': $el.attr('data-freedit-id')}), function(data) {
     freedit_make_modal_window(data);
     freedit_form_translator();
 
@@ -692,7 +694,7 @@ function freedit_send_to_control($el) {
 }
 
 function freedit_control_message($el) {
-  $.get(fe_l('send_control_report', {'editor': me.userName, 'freedit': $el.attr('data-freedit-id')}), function(data) {
+  $.get(fe_l('send_control_report', {'editor': Fe_me.userName, 'freedit': $el.attr('data-freedit-id')}), function(data) {
     freedit_make_modal_window(data);
     freedit_form_translator();
 
@@ -749,8 +751,8 @@ function freedit_init() {
       href = $(this).attr('href');
 
       xy = OpenLayers.Layer.SphericalMercator.forwardMercator(parseFloat(getUrlParameter('lon', href)), parseFloat(getUrlParameter('lat', href)));
-      unsafeWindow.Waze.map.setCenter(xy);
-      unsafeWindow.Waze.map.zoomTo(getUrlParameter('zoom', href));
+      Waze.map.setCenter(xy);
+      Waze.map.zoomTo(getUrlParameter('zoom', href));
     }
   });
 
@@ -767,18 +769,19 @@ function freedit_init() {
 
 //fce wait co volá freedit_init
 function freedit_wait() {
-  if (!window.Waze.map || typeof me == 'undefined' || typeof map == 'undefined') {
+  if (!window.Waze.map || typeof map == 'undefined') {
     setTimeout(freedit_wait, 500);
-  } else {
-    hasStates = Waze.model.hasStates();
+    return ;
+  }
 
-    if (FE_status == 'on') {
-      feedit_after_load_data();
-    }
-    else {
-      console.log('WME Freedit: Load data off');
-      freedit_init();
-    }
+  hasStates = Waze.model.hasStates();
+
+  if (FE_status == 'on') {
+    feedit_after_load_data();
+  }
+  else {
+    console.log('WME Freedit: Load data off');
+    freedit_init();
   }
 }
 
@@ -790,6 +793,7 @@ function feedit_after_load_data() {
       FE_language = I18n.locale;
     }
 
+    Fe_me = Waze.loginManager.user;
     freedit_init();
     InitMapRaidOverlay();
   }
