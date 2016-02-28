@@ -262,13 +262,13 @@ function CurrentRaidLocation(raid_mapLayer) {
 function InitMapRaidOverlay() {
   mro_Map = Waze.map;
   mro_OL = OpenLayers;
-  mro_mapLayers = mro_Map.getLayersBy('uniqueName','Freedit L1+');
-  raid_mapLayer = new mro_OL.Layer.Vector('Freedit L1+', {
+  mro_mapLayers = mro_Map.getLayersBy('uniqueName','Freedit L1+ beta');
+  raid_mapLayer = new mro_OL.Layer.Vector('Freedit L1+ beta', {
     displayInLayerSwitcher: true,
-    uniqueName: 'Freedit L1+'
+    uniqueName: 'Freedit L1+ beta'
   });
 
-  I18n.translations.en.layers.name['Freedit L1+'] = 'Freedit L1+';
+  I18n.translations.en.layers.name['Freedit L1+ beta'] = 'Freedit L1+ beta';
   mro_Map.addLayer(raid_mapLayer);
 
 
