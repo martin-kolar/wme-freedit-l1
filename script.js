@@ -6,12 +6,12 @@
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @version             0.6.1
+// @version             0.6.2
 // @grant               none
 // ==/UserScript==
 //--------------------------------------------------------------------------------------
 
-FE_version = 'Alfa 0.6.1';
+FE_version = 'Alfa 0.6.2';
 
 /* definice trvalých proměných */
   var FE_data = [];
@@ -23,8 +23,8 @@ FE_version = 'Alfa 0.6.1';
   var FE_baseURLs = [new RegExp("https://www.waze.com/editor/"), new RegExp("https://www.waze.com/[^/]+/editor/"), new RegExp("https://editor-beta.waze.com/")];
   var freedit_select_dataWaitForMergeEnd = false;
   var freedit_div_perma = null;
-  // var FE_url = '//www.wazer.cz/f/';
-  var FE_url = '//freedit.local/';
+  var FE_url = '//www.wazer.cz/f/';
+  // var FE_url = '//freedit.local/';
 
   //  controllors keys settings
   var FE_controllorKey = localStorage.getItem('FE_controllorKey');
@@ -34,18 +34,6 @@ FE_version = 'Alfa 0.6.1';
   else if (FE_controllorKey == '') {
     FE_controllorKey = '';  //  pokud jsi dostal klic pro kontrolory, sem ho prosim zadej!
   }
-
-  // var FE_alertsDataMistakes = localStorage.getItem('FE_alertsDataMistakes');
-  // if (typeof FE_alertsDataMistakes != 'string') {
-  //   FE_alertsDataMistakes = '';
-  // }
-  // FE_alertsDataMistakes = FE_alertsDataMistakes.split(',');
-
-  // var FE_alertsDataComplete = localStorage.getItem('FE_alertsDataComplete');
-  // if (typeof FE_alertsDataComplete != 'string') {
-  //   FE_alertsDataComplete = '';
-  // }
-  // FE_alertsDataComplete = FE_alertsDataComplete.split(',');
 
   //  online/offline status
   var FE_status = localStorage.getItem('FE_status');
@@ -71,37 +59,27 @@ var FE_panel = '<div class="panel"><div class="problem-edit severity-low" data-s
   //  cs translation
   FE_translation['cs'] = {
     'link': 'https://www.waze.com/cs/editor/?env=row&lon={lon}&lat={lat}&zoom={zoom}',
-    'map_layer_state_0': 'Freedit: {id}\n{name} ({district})\nVložil: {added_by}\nTento Freedit je VOLNÝ \n {attrs} viz záložka «',
-    'map_layer_state_1': 'Freedit: {id}\n{name} ({district})\nVložil: {added_by}\nEdituje: {editor}\n{attrs} viz záložka «',
-    'map_layer_state_2': 'Freedit: {id}\n{name} ({district})\nVložil: {added_by}\neditoval: {editor}\n ke kontrole\n{attrs} viz záložka «',
-    'map_layer_state_3': 'Freedit: {id}\n{name} ({district})\nVložil: {added_by}\neditoval: {editor}\n HOTOVO, děkujeme',
-    'map_layer_state_4': 'Freedit: {id}\n{name} ({district})\nVložil: {added_by}\neditoval: {editor}\n CHYBA, více info Fórum/rozcestník.\n «« odkaz na záložce ««',
+    'map_layer_state_0': 'Freedit: {id}\nVložil: {added_by}',
+    'map_layer_state_1': 'Freedit: {id}\nEdituje: {editor}',
+    'map_layer_state_2': 'Freedit: {id}\neditoval: {editor}\n ke kontrole',
+    'map_layer_state_3': 'Freedit: {id}\neditoval: {editor}\n HOTOVO, děkujeme',
+    'map_layer_state_4': 'Freedit: {id}\neditoval: {editor}\n CHYBA',
     'tab_add_new_freedit': 'Formulář pro zadání nového',
     'tab_freedit_table': 'Tabulka',
     'tab_graphs': 'Grafy',
     'tab_forum': 'Fórum',
     'tab_signpost': 'Rozcestník',
-    // 'tab_form_for_register_editing': 'Formulář k přihlášení editování',
-    // 'tab_control_form_l3': 'Formulář ke kontrole (L3+)',
     'tab_status_message': 'Status: <a href="#" id="freedit-switch-on-off">{state}</a> Načteno: {freedit_count} F',
-    // 'tab_free_for_all': 'Volný pro L1-6',
-    // 'tab_free_for_l1_2': 'Chci ho (L1-2)',
     'tab_hot_tips_headline': '<br /><b>K editaci:</b>',
     'tab_hot_tips_link': '<a href="{link}" class="freedit-link" data-freedit-id="{id}">Freedit {id}</a> {attrs}',
     'tab_editing_headline': '<br /><b>Edituji:</b><br />',
     'tab_editing_link': '<a href="{link}" class="freedit-link" data-freedit-id="{id}">Freedit {id}</a></u> {editor}: {attrs}',
-    // 'tab_editing_link_own': 'odevzdat',
     'tab_control_headline': '<br /><b>Ke kontrole:</b><br />',
     'tab_control_link': '<a href="{link}" class="freedit-link" data-freedit-id="{id}">Freedit {id}</a></u> {editor}: {attrs}',
-    // 'tab_control_link_l3': 'kontrola L3+',
     'tab_mistake_headline': '<br /><b>Přepracovat:</b> <font size="1"><a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">(více info Fórum/rozcestník)</a></font><br />',
     'tab_mistake_link': '<a href="{link}" class="freedit-link" data-freedit-id="{id}">Freedit {id}</a> {editor}: {attrs}',
     'tab_my_complete_freedit_headline': '<br /><b>Moje hotové freedity:</b><br />',
     'tab_my_complete_freedit_link': '<a href="{link}" class="freedit-link" data-freedit-id="{id}">Freedit {id}</a> {editor}: {attrs}',
-    // 'alert_mistake_with_comment': 'Ahoj {editor}\n\nVe Freedit {id} byly po kontrole nalezeny chyby,\nnebo není ve stavu aby mohl být označený jako hotový!\n\nKomentář ke stavu Freeditu:\n\n{comment}\n\nPro více informací zazvoň v chatu na\nJanek250 / Grepa / d2-mac\n\nnebo koukni do rozcestníku\n(odkaz je na záložce Freedit).',
-    // 'alert_mistake_without_comment': 'Ahoj {editor}\n\nVe Freedit {id} byly po kontrole nalezeny chyby,\nnebo není ve stavu aby mohl být označený jako hotový.\n\nPro více informací zazvoň v chatu na\nJanek250 / Grepa / d2-mac\n\nnebo koukni do rozcestníku\n(odkaz je na záložce Freedit).',
-    // 'alert_complete_with_comment': 'Ahoj {editor}\n\nTebou dokončený Freedit {id} byl vyhodnocen jako hotový s komentářem:\n\n{comment}\n\nDÍKY!',
-    // 'alert_complete_without_comment': 'Ahoj {editor}\n\nTebou dokončený Freedit {id} byl vyhodnocen jako hotový.\n\nDÍKY!',
     'tab_bottom_legend': '<font size="1">Legenda:<br />G - oprava geometrie<br />K - kreslit nové uličky / parkoviště<br />O - kontrola odbočení / jednosměrek<br />N - kontrola názvu ulic / obce<br />A - Areály</font>',
     'script_version': '<font size="1"><a href="https://www.waze.com/forum/viewtopic.php?f=22&t=136397" target="_blank">Script Freedit L1+ verze {version}</a></font>',
     'add_new_form_error': 'Formulář není kompletní! Vyplň všechny údaje!',
@@ -359,19 +337,19 @@ function InitMapRaidOverlay() {
 
       switch(actualFe.state) {
         case 0:
-          FE_info = fe_t('map_layer_state_0', {'id': actualFe.id, 'name': actualFe.name, 'district': actualFe.district, 'added_by': actualFe.added_by, 'attrs': actualFe.attrs});
+          FE_info = fe_t('map_layer_state_0', {'id': actualFe.id, 'added_by': actualFe.added_by});
           break;
         case 1:
-          FE_info = fe_t('map_layer_state_1', {'id': actualFe.id, 'name': actualFe.name, 'district': actualFe.district, 'added_by': actualFe.added_by, 'editor': actualFe.editor, 'attrs': actualFe.attrs});
+          FE_info = fe_t('map_layer_state_1', {'id': actualFe.id, 'editor': actualFe.editor});
           break;
         case 2:
-          FE_info = fe_t('map_layer_state_2', {'id': actualFe.id, 'name': actualFe.name, 'district': actualFe.district, 'added_by': actualFe.added_by, 'editor': actualFe.editor, 'attrs': actualFe.attrs});
+          FE_info = fe_t('map_layer_state_2', {'id': actualFe.id, 'editor': actualFe.editor});
           break;
         case 3:
-          FE_info = fe_t('map_layer_state_3', {'id': actualFe.id, 'name': actualFe.name, 'district': actualFe.district, 'added_by': actualFe.added_by, 'editor': actualFe.editor});
+          FE_info = fe_t('map_layer_state_3', {'id': actualFe.id, 'editor': actualFe.editor});
           break;
         case 4:
-          FE_info = fe_t('map_layer_state_4', {'id': actualFe.id, 'name': actualFe.name, 'district': actualFe.district, 'added_by': actualFe.added_by, 'editor': actualFe.editor});
+          FE_info = fe_t('map_layer_state_4', {'id': actualFe.id, 'editor': actualFe.editor});
           break;
       }
 
@@ -506,15 +484,10 @@ function freedit_make_tab() {
 
   tCon = '';  //  tabContent (obsah zalozky)
   tCon += '<div class="fe-tab-header">'
-        + '<a href="#" id="freedit-add-new">' + fe_t('tab_add_new_freedit') + '</a><br />'
-        + '<a href="https://docs.google.com/spreadsheets/d/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/edit#gid=0" target="_blank">' + fe_t('tab_freedit_table') + '</a>'
-        + ' / (' + fe_t('tab_graphs') + ') / '
-        + '<a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">' + fe_t('tab_forum') + '</a> <font size="1">(' + fe_t('tab_signpost') + ')</font><br />';
-        // + '<a href="#" class="freedit-register" data-freedit-id="">' + fe_t('tab_form_for_register_editing') + '</a>';
-
-  // if (Fe_me.rank >= FE_editorLevel) {
-  //   tCon += '<br /><br /><a href="#" class="freedit-control-message" data-freedit-id="" target="_blank">' + fe_t('tab_control_form_l3') + '</a>';
-  // }
+    + '<a href="#" id="freedit-add-new">' + fe_t('tab_add_new_freedit') + '</a><br />'
+    + '<a href="https://docs.google.com/spreadsheets/d/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/edit#gid=0" target="_blank">' + fe_t('tab_freedit_table') + '</a>'
+    + ' / (' + fe_t('tab_graphs') + ') / '
+    + '<a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">' + fe_t('tab_forum') + '</a> <font size="1">(' + fe_t('tab_signpost') + ')</font><br />';
 
   if (FE_status == 'on') {
     translationOptions = {'state': 'ONline', 'freedit_count': FE_dataCount};
@@ -531,7 +504,6 @@ function freedit_make_tab() {
         case 1:
           if (FE_data[i].editor == Fe_me.userName) {
             FE_editingHtml += fe_t('tab_editing_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'editor': FE_data[i].editor, 'attrs': FE_data[i].attrs});
-            // FE_editingHtml += ((FE_data[i].editor == Fe_me.userName) ? ' <a href="#" class="freedit-to-control" data-freedit-id="' + FE_data[i].id + '">' + fe_t('tab_editing_link_own') + '</a>' : '');
             FE_editingHtml += '<br />';
           }
           break;
@@ -539,7 +511,6 @@ function freedit_make_tab() {
         case 2:
           if (freedit_can_controll() || FE_data[i].editor == Fe_me.userName) {
             FE_forControllHtml += fe_t('tab_control_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'editor': FE_data[i].editor, 'attrs': FE_data[i].attrs});
-            // FE_forControllHtml += ' <a href="#" class="freedit-control-message" data-freedit-id="' + FE_data[i].id + '">' + fe_t('tab_control_link_l3') + '</a>';
             FE_forControllHtml += '<br />';
           }
           break;
@@ -547,32 +518,11 @@ function freedit_make_tab() {
         case 3:
           if (FE_data[i].editor == Fe_me.userName) {
             FE_myCompleteHtml += fe_t('tab_my_complete_freedit_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'editor': FE_data[i].editor, 'attrs': FE_data[i].attrs});
-            // FE_alertsDataComplete[FE_data[i].id] = 1;
-            // localStorage.setItem('FE_alertsDataComplete', FE_alertsDataComplete.join(','));
-
-            // if (FE_data[i].comment != '') {
-            //   alert(fe_t('alert_complete_with_comment', {'editor': Fe_me.userName, 'id': FE_data[i].id, 'comment': FE_data[i].comment}));
-            // }
-            // else {
-            //   alert(fe_t('alert_complete_without_comment', {'editor': Fe_me.userName, 'id': FE_data[i].id}));
-            // }
           }
           break;
 
         case 4:
           FE_mistakesHtml += fe_t('tab_mistake_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'editor': FE_data[i].editor, 'attrs': FE_data[i].attrs});
-
-          // if (FE_data[i].editor == Fe_me.userName && FE_alertsDataMistakes[FE_data[i].id]*1 != FE_date.getHours()) {
-          //   FE_alertsDataMistakes[FE_data[i].id] = FE_date.getHours();
-          //   localStorage.setItem('FE_alertsDataMistakes', FE_alertsDataMistakes.join(','));
-
-          //   if (FE_data[i].comment != '') {
-          //     alert(fe_t('alert_mistake_with_comment', {'editor': Fe_me.userName, 'id': FE_data[i].id, 'comment': FE_data[i].comment}));
-          //   }
-          //   else {
-          //     alert(fe_t('alert_mistake_without_comment', {'editor': Fe_me.userName, 'id': FE_data[i].id}));
-          //   }
-          // }
           break;
       }
     }
@@ -630,7 +580,7 @@ function freedit_message_center(freedit_id) {
       + '<div class="header">'
       + '<a class="close-panel">×</a>'
       + '<div class="type">Freedit ' + freedit_id + '</div>'
-      + '<div class="reported">' + actualFe.name + ' (' + actualFe.district + ' - ' + actualFe.attrs + ')</div>'
+      + '<div class="reported">' + actualFe.name + ' (' + actualFe.district + ' - ' + actualFe.attrs + ')<br />Vložil: ' + actualFe.added_by + '</div>'
       + '</div>'
       + '<div class="body">'
       + '<div class="problem-data" style="max-height: ' + ($(window).height() - 200) + 'px;">'
@@ -639,7 +589,6 @@ function freedit_message_center(freedit_id) {
       + '<div class="collapsible content">'
       + '<div class="conversation-view">'
       + '<div>'
-      // + '<div class="no-comments" style="display: none;">Zatím bez komentářů.<br>Můžete autorovi požadavku napsat dotaz pro více informací</div>'
       + '<ul class="list-unstyled">';
 
     prevStat = 0;

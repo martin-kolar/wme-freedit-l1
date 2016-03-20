@@ -61,6 +61,6 @@ if (!empty($_GET['freedit'])) {
 	else {
 		$returnData['msgs'] = $editorsDataParse;
 	}
-// print_R($returnData);die;
+
 	echo json_encode($returnData);
 }
