@@ -22,23 +22,23 @@ $returnData = array();
 
 foreach ($freeditData as $k => $v) {
 	$returnData[$k] = array(
-		'id' => $v['id'],
+		'id' => intval($v['id']),
 		'time' => $v['time'],
 		'name' => $v['name'],
 		'district' => $v['district'],
 		'region' => $v['region'],
 		'added_by' => $v['added_by'],
-		'lon' => $v['lon'],
-		'lat' => $v['lat'],
-		'zoom' => $v['zoom'],
+		'lon' => floatval($v['lon']),
+		'lat' => floatval($v['lat']),
+		'zoom' => intval($v['zoom']),
 		'attrs' => getAttributesAsText($v['attr_g'], $v['attr_k'], $v['attr_o'], $v['attr_n'], $v['attr_a']),
-		'shape' => $v['shape'],
+		'shape' => intval($v['shape']),
 		'state' => returnActualFreeditState($editorsDataParse[$v['id']], $controlorsDataParse[$v['id']]),
 		'editor' => $editorsDataParse[$v['id']]['nick'],
 		// 'editortime' => $editorsDataParse[$v['id']]['time'],
 		// 'controlortime' => $controlorsDataParse[$v['id']]['time'],
-		'deadline' => returnDadline($v['time'], $deadlineLimit),
-		'comment' => $controlorsDataParse[$v['id']]['comment']
+		// 'deadline' => returnDadline($v['time'], $deadlineLimit),
+		// 'comment' => $controlorsDataParse[$v['id']]['comment']
 	);
 }
 
