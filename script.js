@@ -43,7 +43,7 @@ FE_version = 'Alfa 0.6.2';
 
   var FE_linksSettings = {
     'add_new': FE_url + 'addFreedit.php?name={name}&link={link}&region={region}&district={district}&added_by={added_by}',
-    'register_freedit': FE_url + 'giveMeEdit.php?editor={editor}&freedit={freedit}',
+    'register_freedit': FE_url + 'giveMeEdit.php?editor={editor}&freedit={freedit}&state=1',
     'send_freedit_to_control': FE_url + 'giveMeEdit.php?editor={editor}&freedit={freedit}',
     'send_control_report': FE_url + 'sendControlMessage.php?freedit={freedit}&editor={editor}&key={key}',
     'get_all_data_of_freedit': FE_url + 'getDataById.php?freedit={freedit}'
@@ -68,13 +68,13 @@ FE_version = 'Alfa 0.6.2';
     'tab_forum': 'Fórum',
     'tab_signpost': 'Rozcestník',
     'tab_status_message': 'Status: <a href="#" id="freedit-switch-on-off">{state}</a> Načteno: {freedit_count} F',
-    'tab_hot_tips_headline': '<br /><b>K editaci:</b>',
+    'tab_hot_tips_headline': '<br /><br /><b>K editaci:</b>',
     'tab_hot_tips_link': '<a href="{link}" class="freedit-link" data-freedit-id="{id}">Freedit {id}</a> {attrs}',
     'tab_editing_headline': '<br /><b>Edituji:</b><br />',
     'tab_editing_link': '<a href="{link}" class="freedit-link" data-freedit-id="{id}">Freedit {id}</a></u> {editor}: {attrs}',
     'tab_control_headline': '<br /><b>Ke kontrole:</b><br />',
     'tab_control_link': '<a href="{link}" class="freedit-link" data-freedit-id="{id}">Freedit {id}</a></u> {editor}: {attrs}',
-    'tab_mistake_headline': '<br /><b>Přepracovat:</b> <font size="1"><a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">(více info Fórum/rozcestník)</a></font><br />',
+    'tab_mistake_headline': '<br /><b>Přepracovat:</b><br />',
     'tab_mistake_link': '<a href="{link}" class="freedit-link" data-freedit-id="{id}">Freedit {id}</a> {editor}: {attrs}',
     'tab_my_complete_freedit_headline': '<br /><b>Moje hotové freedity:</b><br />',
     'tab_my_complete_freedit_link': '<a href="{link}" class="freedit-link" data-freedit-id="{id}">Freedit {id}</a> {editor}: {attrs}',
@@ -516,11 +516,13 @@ function freedit_make_tab() {
         case 3:
           if (FE_data[i].editor == Fe_me.userName) {
             FE_myCompleteHtml += fe_t('tab_my_complete_freedit_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'editor': FE_data[i].editor, 'attrs': FE_data[i].attrs});
+            FE_myCompleteHtml += '<br />';
           }
           break;
 
         case 4:
           FE_mistakesHtml += fe_t('tab_mistake_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'editor': FE_data[i].editor, 'attrs': FE_data[i].attrs});
+          FE_mistakesHtml += '<br />';
           break;
       }
     }
