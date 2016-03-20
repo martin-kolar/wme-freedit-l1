@@ -153,7 +153,7 @@ FE_version = 'Alfa 0.6.3';
     + '#fe-modal-window { position:fixed;width:900px;left:50%;margin-left:-450px;height:700px;top:50%;margin-top:-350px;z-index:99992;background:#ffffff;padding:20px; }'
     + '.fe-hot-tips {width:100%;height:300px;overflow-y:scroll;}'
     + '#FEmsg textarea {height: 140px;}'
-    + '#FEmsg .header{background-color:#AF1B1B;}'
+    + '#FEmsg .header{background-color:#906090;}'
     + '#FEmsg .list-unstyled{overflow-y:auto;}'
     + '#FEmsg .problem-data{overflow-y:hidden;}'
     + '</style>';
@@ -1083,11 +1083,8 @@ function freedit_init() {
       event.stopPropagation();
       href = $(this).attr('href');
 
-      xy = OpenLayers.Layer.SphericalMercator.forwardMercator(parseFloat(getUrlParameter('lon', href)), parseFloat(getUrlParameter('lat', href)));
-      Waze.map.setCenter(xy);
-      Waze.map.zoomTo(getUrlParameter('zoom', href));
-
-      freedit_message_center($(this).attr('data-freedit-id'));;
+      freedit_jump_to({lon:parseFloat(getUrlParameter('lon', href)), lat:parseFloat(getUrlParameter('lat', href)), zoom:getUrlParameter('zoom', href), segments:null, nodes:null, venues:null, mapUpdateRequest:null});
+      freedit_message_center($(this).attr('data-freedit-id'));
     }
   });
 
