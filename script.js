@@ -639,9 +639,9 @@ function freedit_message_center(freedit_id) {
         + '<input type="radio" name="state" value="' + actualFe.state + '" id="state-not-identified" checked="checked"><label for="state-not-identified">Neměnit stav</label>'
         + '</div>';
     }
-    // else if (actualFe.editor == Fe_me.userName && actualFe.state >= 2) {
-    //   msgCnt += '<div class="controls-container" data-freedit-href="' + fe_l('send_freedit_to_control', {'editor': Fe_me.userName, 'freedit': freedit_id}) + '"></div>';
-    // }
+    else if (actualFe.editor == Fe_me.userName && actualFe.state >= 2) {
+      msgCnt += '<div class="controls-container" data-freedit-href="' + fe_l('send_freedit_to_control', {'editor': Fe_me.userName, 'freedit': freedit_id}) + '"></div>';
+    }
     else if (freedit_can_controll() && actualFe.state < 4) {
       msgCnt += '<div class="controls-container" data-freedit-href="' + fe_l('send_control_report', {'editor': Fe_me.userName, 'freedit': freedit_id, 'key': FE_controllorKey}) + '">'
         + '<input type="radio" name="state" value="4" id="state-open"><label for="state-open">Vrátit s chybou</label>'
