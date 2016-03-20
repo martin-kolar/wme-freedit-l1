@@ -21,6 +21,8 @@ FE_version = 'Alfa 0.6.1';
   var FE_date = new Date();
   var Fe_me = null;
   var FE_baseURLs = [new RegExp("https://www.waze.com/editor/"), new RegExp("https://www.waze.com/[^/]+/editor/"), new RegExp("https://editor-beta.waze.com/")];
+  var freedit_select_dataWaitForMergeEnd = false;
+  var freedit_div_perma = null;
   // var FE_url = '//www.wazer.cz/f/';
   var FE_url = '//freedit.local/';
 
@@ -174,6 +176,7 @@ var FE_panel = '<div class="panel"><div class="problem-edit severity-low" data-s
     + '#fe-modal-window-background { position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:99990; }'
     + '#fe-modal-window { position:fixed;width:900px;left:50%;margin-left:-450px;height:700px;top:50%;margin-top:-350px;z-index:99992;background:#ffffff;padding:20px; }'
     + '.fe-hot-tips {width:100%;height:300px;overflow-y:scroll;}'
+    + '#FEmsg textarea {height: 140px;}'
     + '</style>';
 
 
@@ -621,7 +624,7 @@ function freedit_message_center(freedit_id) {
   var actualFe = FE_data[freedit_id];
 
   $.get(fe_l('get_all_data_of_freedit', {'freedit': freedit_id}), function(data) {
-    console.log(actualFe, data, data.msgs, data.msgs.length);
+    // console.log(actualFe, data, data.msgs, data.msgs.length);
 
     msgCnt = '<div class="problem-edit severity-low" id="FEmsg">'
       + '<div class="header">'
@@ -630,13 +633,13 @@ function freedit_message_center(freedit_id) {
       + '<div class="reported">' + actualFe.name + ' (' + actualFe.district + ' - ' + actualFe.attrs + ')</div>'
       + '</div>'
       + '<div class="body">'
-      + '<div class="problem-data" style="max-height: 1044px;">'
+      + '<div class="problem-data" style="max-height: ' + ($(window).height() - 200) + 'px;">'
       + '<div class="conversation section">'
       + '<div class="title">Diskuze<span class="comment-count-badge">' + data.msgs.length + '</span></div>'
       + '<div class="collapsible content">'
       + '<div class="conversation-view">'
       + '<div>'
-      + '<div class="no-comments" style="display: none;">Zatím bez komentářů.<br>Můžete autorovi požadavku napsat dotaz pro více informací</div>'
+      // + '<div class="no-comments" style="display: none;">Zatím bez komentářů.<br>Můžete autorovi požadavku napsat dotaz pro více informací</div>'
       + '<ul class="list-unstyled">';
 
     prevStat = 0;
@@ -663,6 +666,7 @@ function freedit_message_center(freedit_id) {
     if (actualFe.editor != null) {
       msgCnt += '<div class="clearfix new-comment-form">'
       + '<textarea class="form-control new-comment-text" placeholder="Přidat komentář..." required=""></textarea>'
+      + '<div style="float: left; position: relative; left: 0; margin-top: 6px; display: block;"><a class=" fa fa-link icon-link">+</a></div>'
       + '<button class="btn btn-default" type="submit">Poslat</button>'
       + '</div>';
     }
@@ -759,12 +763,39 @@ function freedit_message_center(freedit_id) {
       }, 'json');
     });
 
+    $('#FEmsg .icon-link').on('click', function(event) {
+      event.preventDefault();
+
+      var inputmessage = $('#FEmsg textarea');
+      var curPermalink = null;
+      for (var i = 0;i < freedit_div_perma.children.length;i++) {
+        if (freedit_div_perma.children[i].className == "icon-link" || freedit_div_perma.children[i].className == "fa fa-link") {
+          curPermalink = freedit_div_perma.children[i].href;
+          break;
+        }
+      }
+      inputmessage.val(inputmessage.val() + ' ' + curPermalink);
+      window.setTimeout(freedit_set_focus_on_inputs_message, 100);
+    });
+
     $('#FEmsg .fe-msg-permalink').on('click', function(event) {
       linkData = $(this);
       event.preventDefault();
-      freedit_jump_to({lon:linkData.attr('data-link-lon'), lat:linkData.attr('data-link-lat'), zoom:linkData.attr('data-link-zoom'), segments:linkData.attr('data-link-segments'), nodes:linkData.attr('data-link-nodes'), venues:linkData.attr('data-link-venues'), mapUpdateRequest:linkData.attr('data-link-mapUpdateRequest')});
+
+      lon = parseFloat(linkData.attr('data-link-lon'));
+      lat = parseFloat(linkData.attr('data-link-lat'));
+      zoom = parseInt(linkData.attr('data-link-zoom'));
+      segments = linkData.attr('data-link-segments') == 'null' ? null : linkData.attr('data-link-segments').split(",");
+      nodes = linkData.attr('data-link-nodes') == 'null' ? null : linkData.attr('data-link-nodes').split(",");
+
+      freedit_jump_to({lon:lon, lat:lat, zoom:zoom, segments:segments, nodes:nodes, venues:null, mapUpdateRequest:null});
     })
   }, 'json');
+}
+
+
+function freedit_set_focus_on_inputs_message() {
+  $('#FEmsg textarea').focus();
 }
 
 function freedit_message_center_comment(statusChange, nick, date, comment) {
@@ -920,33 +951,146 @@ function freedit_return_msg_with_permalink(msg) {
 }
 
 function freedit_jump_to(jumpSet) {
-  // Waze.selectionManager.unselectAll();
-  // if (typeof ChatJumper !== "undefined") {
-  //   if (ChatJumper.isLast) {
-  //   } else {
-  //     var c = Waze.map.getCenter();
-  //     var zoom = Waze.map.getZoom();
-  //     ChatJumper.last = [c.lon, c.lat];
-  //     ChatJumper.zoom = zoom;
-  //     ChatJumper.isLast = true;
-  //     ChatJumper.saveLS();
-  //     ChatJumper.showButton();
-  //   }
-  // }
-  // selectDataWaitForMergeEnd = false;
-  // if (jumpSet.segments || jumpSet.nodes || jumpSet.venues || jumpSet.mapUpdateRequest) {
-  //   currentJumpSet = jumpSet;
-  //   // Waze.model.events.register("mergestart", null, mergestart);
-  // }
-  // var xy = OpenLayers.Layer.SphericalMercator.forwardMercator(jumpSet.lon, jumpSet.lat);
-  // if (jumpSet.zoom) {
-  //   Waze.map.setCenter(xy, jumpSet.zoom);
-  // } else {
-  //   Waze.map.setCenter(xy);
-  // }
-  // if (jumpSet.segments || jumpSet.nodes || jumpSet.venues || jumpSet.mapUpdateRequest) {
-  //   window.setTimeout(getFunctionWithArgs(selectData, [jumpSet]), 500);
-  // }
+  Waze.selectionManager.unselectAll();
+  if (typeof ChatJumper !== "undefined") {
+    if (ChatJumper.isLast) {
+    } else {
+      var c = Waze.map.getCenter();
+      var zoom = Waze.map.getZoom();
+      ChatJumper.last = [c.lon, c.lat];
+      ChatJumper.zoom = zoom;
+      ChatJumper.isLast = true;
+      ChatJumper.saveLS();
+      ChatJumper.showButton();
+    }
+  }
+  freedit_select_dataWaitForMergeEnd = false;
+  if (jumpSet.segments || jumpSet.nodes || jumpSet.venues || jumpSet.mapUpdateRequest) {
+    currentJumpSet = jumpSet;
+    Waze.model.events.register("freedit_mergestart", null, freedit_mergestart);
+  }
+  var xy = OpenLayers.Layer.SphericalMercator.forwardMercator(jumpSet.lon, jumpSet.lat);
+  if (jumpSet.zoom) {
+    Waze.map.setCenter(xy, jumpSet.zoom);
+  } else {
+    Waze.map.setCenter(xy);
+  }
+  if (jumpSet.segments || jumpSet.nodes || jumpSet.venues || jumpSet.mapUpdateRequest) {
+    window.setTimeout(freedit_get_function_with_args(freedit_select_data, [jumpSet]), 500);
+  }
+}
+
+function freedit_mergestart() {
+  try {
+    freedit_select_dataWaitForMergeEnd = true;
+    Waze.model.events.unregister("freedit_mergestart", null, freedit_mergestart);
+    Waze.model.events.register("freedit_mergeend", null, freedit_mergeend);
+  } catch (e) {
+    console.log("Error:", e);
+  }
+}
+function freedit_mergeend() {
+  try {
+    Waze.model.events.unregister("freedit_mergeend", null, freedit_mergeend);
+    freedit_select_dataWaitForMergeEnd = false;
+    freedit_select_data(currentJumpSet);
+  } catch (e) {
+    console.log("Error:", e);
+  }
+}
+function freedit_select_data(jumpSet) {
+  if (freedit_select_dataWaitForMergeEnd == true) {
+    console.log("waiting for data...");
+    return;
+  }
+  Waze.model.events.unregister("freedit_mergestart", null, freedit_mergestart);
+  Waze.model.events.unregister("freedit_mergeend", null, freedit_mergeend);
+  var success = true;
+  var notFound = [];
+  var elements = 0;
+  if (jumpSet.segments) {
+    var segs = [];
+    for (var i = 0;i < jumpSet.segments.length;i++) {
+      var segId = parseInt(jumpSet.segments[i]);
+      if (typeof Waze.model.segments.objects[segId] === "undefined") {
+        success = false;
+        notFound.push(segId);
+      } else {
+        segs.push(Waze.model.segments.objects[segId]);
+      }
+    }
+    elements = jumpSet.segments.length;
+    Waze.selectionManager.select(segs);
+  }
+  if (jumpSet.nodes) {
+    var nodes = [];
+    for (var i = 0;i < jumpSet.nodes.length;i++) {
+      var nodeId = parseInt(jumpSet.nodes[i]);
+      if (typeof Waze.model.nodes.objects[nodeId] === "undefined") {
+        success = false;
+        notFound.push(nodeId);
+      } else {
+        nodes.push(Waze.model.nodes.objects[nodeId]);
+      }
+    }
+    elements = jumpSet.nodes.length;
+    Waze.selectionManager.select(nodes);
+  }
+  if (jumpSet.venues) {
+    Waze.map.landmarkLayer.setVisibility(true);
+    var venues = [];
+    for (var i = 0;i < jumpSet.venues.length;i++) {
+      var venueId = jumpSet.venues[i];
+      if (typeof Waze.model.venues.objects[venueId] === "undefined") {
+        success = false;
+        notFound.push(venueId);
+      } else {
+        venues.push(Waze.model.venues.objects[venueId]);
+      }
+    }
+    elements = jumpSet.venues.length;
+    Waze.selectionManager.select(venues);
+  }
+  if (jumpSet.mapUpdateRequest && jumpSet.mapUpdateRequest.length >= 1 && !jumpSet.segments && !jumpSet.nodes && !jumpSet.venues) {
+    var mp = Waze.model.problems.objects[parseInt(jumpSet.mapUpdateRequest[0])];
+    var tp = null;
+    if (mp == null) {
+      tp = Waze.model.turnProblems.objects[parseInt(jumpSet.mapUpdateRequest[0])];
+    }
+    if (mp != null) {
+      problemsControl.selectProblem(mp);
+      success = true;
+    }
+    if (tp != null) {
+      problemsControl.selectProblem(tp);
+      success = true;
+    }
+  }
+  if (!success) {
+    if (jumpSet.hasOwnProperty("attempt") && jumpSet.attempt >= 2) {
+      if (confirm("Some elements can't be found.\nSelection: " + Waze.selectionManager.selectedItems.length + "/" + elements + "\nNot found: " + (notFound.length != 0 ? "Elements ids: " + notFound.join(", ") + "\n" : "") + "Try again to select elements?")) {
+        window.setTimeout(freedit_get_function_with_args(freedit_select_data, [jumpSet]), 500);
+      }
+      return;
+    }
+    if (jumpSet.hasOwnProperty("attempt")) {
+      jumpSet.attempt++;
+    } else {
+      jumpSet.attempt = 0;
+    }
+    window.setTimeout(freedit_get_function_with_args(freedit_select_data, [jumpSet]), 500);
+  } else {
+    console.log("Data selected...:", jumpSet);
+  }
+}
+function freedit_get_function_with_args(func, args) {
+  return function() {
+    var json_args = JSON.stringify(args);
+    return function() {
+      var args = JSON.parse(json_args);
+      func.apply(this, args);
+    };
+  }();
 }
 
 //fce záložka obsah
@@ -998,6 +1142,13 @@ function freedit_init() {
     }
     window.location.reload();
   });
+
+  var mapFooter = getElementsByClassName("WazeControlPermalink");
+  if (mapFooter.length == 0) {
+    console.log("error: can't find permalink container");
+  } else {
+    freedit_div_perma = mapFooter[0];
+  }
 }
 
 //fce wait co volá freedit_init
