@@ -23,8 +23,8 @@ FE_version = 'Alfa 0.6.3';
   var FE_baseURLs = [new RegExp("https://www.waze.com/editor/"), new RegExp("https://www.waze.com/[^/]+/editor/"), new RegExp("https://editor-beta.waze.com/")];
   var freedit_select_dataWaitForMergeEnd = false;
   var freedit_div_perma = null;
-  var FE_url = '//www.wazer.cz/f/';
-  // var FE_url = '//freedit.local/';
+  // var FE_url = '//www.wazer.cz/f/';
+  var FE_url = '//freedit.local/';
 
   //  controllors keys settings
   var FE_controllorKey = localStorage.getItem('FE_controllorKey');
@@ -583,7 +583,7 @@ function freedit_message_center(freedit_id) {
       + '<div class="header">'
       + '<a class="close-panel">×</a>'
       + '<div class="type">Freedit ' + freedit_id + '</div>'
-      + '<div class="reported">' + actualFe.name + ' (' + actualFe.district + ' - ' + actualFe.attrs + ')<br />Vložil: ' + actualFe.added_by + '</div>'
+      + '<div class="reported">' + actualFe.name + ' (' + actualFe.district + ') - ' + actualFe.attrs + '<br />Vložil: ' + actualFe.added_by + '</div>'
       + '</div>'
       + '<div class="body">'
       + '<div class="problem-data">'
@@ -659,7 +659,8 @@ function freedit_message_center(freedit_id) {
       msgCnt += '<div class="controls-container" data-freedit-href="' + fe_l('send_freedit_to_control', {'editor': Fe_me.userName, 'freedit': freedit_id, 'key': FE_controllorKey}) + '"></div>';
     }
 
-    msgCnt += '</div>'
+    msgCnt += '<input type="hidden" name="actualState" value="' + data.acutalState + '" />'
+      + '</div>'
       + '</div>'
       + '</div>'
       + '</div>'
@@ -703,7 +704,7 @@ function freedit_message_center(freedit_id) {
     $('#FEmsg button').on('click', function(event) {
       event.preventDefault();
 
-      $.get($('#FEmsg .controls-container').attr('data-freedit-href'), {actualState: actualFe.state, state: $('input[name=state]:checked').val(), comment: $('#FEmsg textarea').val()}, function(data) {
+      $.get($('#FEmsg .controls-container').attr('data-freedit-href'), {actualState: $('#FEmsg input[name=actualState]').val(), state: $('input[name=state]:checked').val(), comment: $('#FEmsg textarea').val()}, function(data) {
         if (data.error == 0) {
           if (typeof data.msg !== 'undefined') {
             alert(data.msg)

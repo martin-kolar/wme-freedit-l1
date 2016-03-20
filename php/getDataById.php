@@ -62,5 +62,7 @@ if (!empty($_GET['freedit'])) {
 		$returnData['msgs'] = $editorsDataParse;
 	}
 
+	$returnData['actualState'] = $editorsDataParse[(count($editorsDataParse) - 1)]['state'];
+
 	echo json_encode($returnData);
 }
