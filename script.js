@@ -23,8 +23,8 @@ FE_version = 'Alfa 0.6.3';
   var FE_baseURLs = [new RegExp("https://www.waze.com/editor/"), new RegExp("https://www.waze.com/[^/]+/editor/"), new RegExp("https://editor-beta.waze.com/")];
   var freedit_select_dataWaitForMergeEnd = false;
   var freedit_div_perma = null;
-  // var FE_url = '//www.wazer.cz/f/';
-  var FE_url = '//freedit.local/';
+  var FE_url = '//www.wazer.cz/f/';
+  // var FE_url = '//freedit.local/';
 
   //  controllors keys settings
   var FE_controllorKey = localStorage.getItem('FE_controllorKey');
