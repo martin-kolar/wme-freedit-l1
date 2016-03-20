@@ -6,12 +6,12 @@
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @version             0.6.2
+// @version             0.6.3
 // @grant               none
 // ==/UserScript==
 //--------------------------------------------------------------------------------------
 
-FE_version = 'Alfa 0.6.2';
+FE_version = 'Alfa 0.6.3';
 
 /* definice trvalých proměných */
   var FE_data = [];
@@ -153,6 +153,9 @@ FE_version = 'Alfa 0.6.2';
     + '#fe-modal-window { position:fixed;width:900px;left:50%;margin-left:-450px;height:700px;top:50%;margin-top:-350px;z-index:99992;background:#ffffff;padding:20px; }'
     + '.fe-hot-tips {width:100%;height:300px;overflow-y:scroll;}'
     + '#FEmsg textarea {height: 140px;}'
+    + '#FEmsg .header{background-color:#AF1B1B;}'
+    + '#FEmsg .list-unstyled{overflow-y:auto;}'
+    + '#FEmsg .problem-data{overflow-y:hidden;}'
     + '</style>';
 
 
@@ -583,13 +586,13 @@ function freedit_message_center(freedit_id) {
       + '<div class="reported">' + actualFe.name + ' (' + actualFe.district + ' - ' + actualFe.attrs + ')<br />Vložil: ' + actualFe.added_by + '</div>'
       + '</div>'
       + '<div class="body">'
-      + '<div class="problem-data" style="max-height: ' + ($(window).height() - 200) + 'px;">'
+      + '<div class="problem-data">'
       + '<div class="conversation section">'
       + '<div class="title">Diskuze<span class="comment-count-badge">' + data.msgs.length + '</span></div>'
       + '<div class="collapsible content">'
       + '<div class="conversation-view">'
       + '<div>'
-      + '<ul class="list-unstyled">';
+      + '<ul class="list-unstyled" style="max-height: ' + ($('#WazeMap').height() - 430) + 'px;">';
 
     prevStat = 0;
 
