@@ -6,12 +6,12 @@
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @version             0.6.4
+// @version             0.6.5
 // @grant               none
 // ==/UserScript==
 //--------------------------------------------------------------------------------------
 
-FE_version = 'Alfa 0.6.4';
+FE_version = 'Beta 0.6.5';
 
 /* definice trvalých proměných */
   var FE_data = [];
@@ -314,11 +314,11 @@ function InitMapRaidOverlay() {
     actualFe = FE_data[i];
     if (typeof actualFe == 'object') {
       switch(actualFe.shape) {
-        case "1":
+        case 1:
           zx = FE_shape1x;
           zy = FE_shape1y;
           break;
-        case "2":
+        case 2:
           zx = FE_shape2x;
           zy = FE_shape2y;
           break;
