@@ -1,17 +1,17 @@
 // ==UserScript==
 // @name                Beta-Freedit L1+
 // @namespace           https://greasyfork.org/users/10038-janek250
-// @author              Janek250 & Martin Kolář
+// @author              Janek250 & Martin Kolář & krizecek
 // @description         Vrstva míst úprav pro nováčky Freedit L1+
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @version             0.6.5
+// @version             0.6.6
 // @grant               none
 // ==/UserScript==
 //--------------------------------------------------------------------------------------
 
-FE_version = 'Beta 0.6.5';
+FE_version = 'Beta 0.6.6';
 
 /* definice trvalých proměných */
   var FE_data = [];
@@ -41,6 +41,8 @@ FE_version = 'Beta 0.6.5';
     FE_status = 'on';
   }
 
+  console.log('WME Freedit Status: ' + FE_status);
+
   var FE_linksSettings = {
     'add_new': FE_url + 'addFreedit.php?name={name}&link={link}&region={region}&district={district}&added_by={added_by}',
     'register_freedit': FE_url + 'giveMeEdit.php?editor={editor}&freedit={freedit}&state=1',
@@ -67,7 +69,8 @@ FE_version = 'Beta 0.6.5';
     'tab_graphs': 'Grafy',
     'tab_forum': 'Fórum',
     'tab_signpost': 'Rozcestník',
-    'tab_status_message': 'Status: <a href="#" id="freedit-switch-on-off">{state}</a> Načteno: {freedit_count} F',
+    'tab_status_message_online': 'Status: <a href="#" id="freedit-switch-on-off">{state}</a><br> Načteno: {freedit_count} F',
+    'tab_status_message_offline': 'Status: <a href="#" id="freedit-switch-on-off">{state}</a><br> Načteno: {freedit_count} F<br>Data pochází z data: {date}',
     'tab_hot_tips_headline': '<br /><br /><b>K editaci:</b>',
     'tab_hot_tips_link': '<a href="{link}" class="freedit-link" data-freedit-id="{id}">Freedit {id}</a> {attrs}',
     'tab_editing_headline': '<br /><b>Edituji:</b><br />',
@@ -158,20 +161,29 @@ FE_version = 'Beta 0.6.5';
     + '#FEmsg .problem-data{overflow-y:hidden;}'
     + '</style>';
 
-
-
 if (FE_status == 'on') {
   console.log('WME Freedit: Start load data');
 
   $.get(FE_url + 'getData.php', function(data) {
+    localStorage.setItem("FE_data", JSON.stringify(data));
+    localStorage.setItem("FE_data_date", FE_date.toLocaleDateString());
     for (var i in data) {
       FE_data[data[i].id] = data[i];
     }
 
     FE_dataCount = FE_data.length;
-    console.log('WME Freedit: End load data');
     FE_dataLoad = true;
   }, 'json');
+}
+else {
+  data = JSON.parse(localStorage.getItem("FE_data"));
+
+  for (var i in data) {
+    FE_data[data[i].id] = data[i];
+  }
+
+  FE_dataCount = FE_data.length;
+  FE_dataLoad = true;
 }
 
 //Ošetření service Greasymonkey
@@ -491,70 +503,70 @@ function freedit_make_tab() {
     + '<a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">' + fe_t('tab_forum') + '</a> <font size="1">(' + fe_t('tab_signpost') + ')</font><br />';
 
   if (FE_status == 'on') {
-    translationOptions = {'state': 'ONline', 'freedit_count': FE_dataCount};
-
-    for (var i in FE_data) {
-      switch(FE_data[i].state) {
-        case 0:
-          if (!freedit_can_controll()) {
-            FE_tipsHtml += fe_t('tab_hot_tips_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'attrs': FE_data[i].attrs, 'user': Fe_me.userName});
-            FE_tipsHtml += '<br />';
-          }
-          break;
-
-        case 1:
-          if (FE_data[i].editor == Fe_me.userName) {
-            FE_editingHtml += fe_t('tab_editing_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'editor': FE_data[i].editor, 'attrs': FE_data[i].attrs});
-            FE_editingHtml += '<br />';
-          }
-          break;
-
-        case 2:
-          if (freedit_can_controll() || FE_data[i].editor == Fe_me.userName) {
-            FE_forControllHtml += fe_t('tab_control_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'editor': FE_data[i].editor, 'attrs': FE_data[i].attrs});
-            FE_forControllHtml += '<br />';
-          }
-          break;
-
-        case 3:
-          if (FE_data[i].editor == Fe_me.userName) {
-            FE_myCompleteHtml += fe_t('tab_my_complete_freedit_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'editor': FE_data[i].editor, 'attrs': FE_data[i].attrs});
-            FE_myCompleteHtml += '<br />';
-          }
-          break;
-
-        case 4:
-          FE_mistakesHtml += fe_t('tab_mistake_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'editor': FE_data[i].editor, 'attrs': FE_data[i].attrs});
-          FE_mistakesHtml += '<br />';
-          break;
-      }
-    }
-
-    if (FE_editingHtml != '') { //  pokud se prave neco edituje, zobrazime to
-      FE_onlineContent += fe_t('tab_editing_headline') + FE_editingHtml;
-    }
-
-    if (FE_forControllHtml != '') { //  pokud je neco ke kontrole, zobrazime to
-      FE_onlineContent += fe_t('tab_control_headline') + FE_forControllHtml;
-    }
-
-    if (FE_mistakesHtml != '') { //  pokud jsou nekde nejake chyby, zobrazime to
-      FE_onlineContent += fe_t('tab_mistake_headline') + FE_mistakesHtml;
-    }
-
-    if (FE_tipsHtml != '') { //  pokud jsou nejake horke tipy, zobrazime
-      FE_onlineContent += fe_t('tab_hot_tips_headline') + '<div class="fe-hot-tips">' + FE_tipsHtml + '</div>';
-    }
-
-    if (FE_myCompleteHtml != '') {  //  pokud jsem neco dokoncil, tak to zobrazime
-      FE_onlineContent += fe_t('tab_my_complete_freedit_headline') + FE_myCompleteHtml;
-    }
+    tCon += '<br /><br />' + fe_t('tab_status_message_online', {'state': 'ONline', 'freedit_count': FE_dataCount});
   }
   else {
-    translationOptions = {'state': 'OFFline', 'freedit_count': FE_dataCount};
+    tCon += '<br /><br />' + fe_t('tab_status_message_offline', {'state': 'OFFline', 'freedit_count': FE_dataCount, 'date': localStorage.getItem("FE_data_date")});
   }
 
-  tCon += '<br /><br />' + fe_t('tab_status_message', translationOptions) + '<br /><br />' + FE_onlineContent + '<br /><br />';
+  for (var i in FE_data) {
+    switch(FE_data[i].state) {
+      case 0:
+        if (!freedit_can_controll()) {
+          FE_tipsHtml += fe_t('tab_hot_tips_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'attrs': FE_data[i].attrs, 'user': Fe_me.userName});
+          FE_tipsHtml += '<br />';
+        }
+        break;
+
+      case 1:
+        if (FE_data[i].editor == Fe_me.userName) {
+          FE_editingHtml += fe_t('tab_editing_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'editor': FE_data[i].editor, 'attrs': FE_data[i].attrs});
+          FE_editingHtml += '<br />';
+        }
+        break;
+
+      case 2:
+        if (freedit_can_controll() || FE_data[i].editor == Fe_me.userName) {
+          FE_forControllHtml += fe_t('tab_control_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'editor': FE_data[i].editor, 'attrs': FE_data[i].attrs});
+          FE_forControllHtml += '<br />';
+        }
+        break;
+
+      case 3:
+        if (FE_data[i].editor == Fe_me.userName) {
+          FE_myCompleteHtml += fe_t('tab_my_complete_freedit_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'editor': FE_data[i].editor, 'attrs': FE_data[i].attrs});
+          FE_myCompleteHtml += '<br />';
+        }
+        break;
+
+      case 4:
+        FE_mistakesHtml += fe_t('tab_mistake_link', {'link': returnWazeLink(FE_data[i].lon, FE_data[i].lat, FE_data[i].zoom), 'id': FE_data[i].id, 'editor': FE_data[i].editor, 'attrs': FE_data[i].attrs});
+        FE_mistakesHtml += '<br />';
+        break;
+    }
+  }
+
+  if (FE_editingHtml != '') { //  pokud se prave neco edituje, zobrazime to
+    FE_onlineContent += fe_t('tab_editing_headline') + FE_editingHtml;
+  }
+
+  if (FE_forControllHtml != '') { //  pokud je neco ke kontrole, zobrazime to
+    FE_onlineContent += fe_t('tab_control_headline') + FE_forControllHtml;
+  }
+
+  if (FE_mistakesHtml != '') { //  pokud jsou nekde nejake chyby, zobrazime to
+    FE_onlineContent += fe_t('tab_mistake_headline') + FE_mistakesHtml;
+  }
+
+  if (FE_tipsHtml != '') { //  pokud jsou nejake horke tipy, zobrazime
+    FE_onlineContent += fe_t('tab_hot_tips_headline') + '<div class="fe-hot-tips">' + FE_tipsHtml + '</div>';
+  }
+
+  if (FE_myCompleteHtml != '') {  //  pokud jsem neco dokoncil, tak to zobrazime
+    FE_onlineContent += fe_t('tab_my_complete_freedit_headline') + FE_myCompleteHtml;
+  }
+
+  tCon += '<br /><br />' + FE_onlineContent + '<br /><br />';
 
   tCon += fe_t('tab_bottom_legend') + '<br />' + fe_t('script_version', {'version': FE_version});
 
@@ -685,7 +697,7 @@ function freedit_message_center(freedit_id) {
       $.get(fe_l('register_freedit', {'state': 1, 'editor': Fe_me.userName, 'freedit': freedit_id}), {}, function(data) {
         if (data.error == 0) {
           if (typeof data.msg !== 'undefined') {
-            alert(data.msg)
+            alert(data.msg);
           }
 
           if (typeof data.state !== 'undefined') {
@@ -707,7 +719,7 @@ function freedit_message_center(freedit_id) {
       $.get($('#FEmsg .controls-container').attr('data-freedit-href'), {actualState: $('#FEmsg input[name=actualState]').val(), state: $('input[name=state]:checked').val(), comment: $('#FEmsg textarea').val()}, function(data) {
         if (data.error == 0) {
           if (typeof data.msg !== 'undefined') {
-            alert(data.msg)
+            alert(data.msg);
           }
 
           if (typeof data.state !== 'undefined') {
@@ -748,7 +760,7 @@ function freedit_message_center(freedit_id) {
       nodes = linkData.attr('data-link-nodes') == 'null' ? null : linkData.attr('data-link-nodes').split(",");
 
       freedit_jump_to({lon:lon, lat:lat, zoom:zoom, segments:segments, nodes:nodes, venues:null, mapUpdateRequest:null});
-    })
+    });
   }, 'json');
 }
 
@@ -764,7 +776,7 @@ function freedit_message_center_comment(statusChange, nick, date, comment) {
     + '<span class="username">' + nick + '</span> '
     + '<span class="date">' + date + '</span>'
     + '</div>'
-    + '<div class="text">' + freedit_return_msg_with_permalink(comment) + '</div>',
+    + '<div class="text">' + freedit_return_msg_with_permalink(comment) + '</div>'
     + '</div>'
     + '</li>';
 
@@ -829,7 +841,7 @@ function freedit_add_new() {
             freedit_close_modal_window();
           }
         }, 'json');
-      })
+      });
     });
   }, 'json');
 }
@@ -1109,20 +1121,13 @@ function freedit_init() {
 
 //fce wait co volá freedit_init
 function freedit_wait() {
-  if (!window.Waze.map || typeof map == 'undefined') {
+  if (!window.Waze.map || typeof map === 'undefined' || typeof Waze.loginManager.user === 'undefined' || Waze.loginManager.user == null) {
     setTimeout(freedit_wait, 500);
     return ;
   }
 
   hasStates = Waze.model.hasStates();
-
-  if (FE_status == 'on') {
-    freedit_after_load_data();
-  }
-  else {
-    console.log('WME Freedit: Load data off');
-    freedit_init();
-  }
+  freedit_after_load_data();
 }
 
 function freedit_after_load_data() {
