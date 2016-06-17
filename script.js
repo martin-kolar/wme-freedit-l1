@@ -6,12 +6,12 @@
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @version             0.6.6
+// @version             0.6.7
 // @grant               none
 // ==/UserScript==
 //--------------------------------------------------------------------------------------
 
-FE_version = 'Beta 0.6.6';
+FE_version = 'Beta 0.6.7';
 
 /* definice trvalých proměných */
   var FE_data = [];
@@ -279,13 +279,13 @@ function CurrentRaidLocation(raid_mapLayer) {
 function InitMapRaidOverlay() {
   mro_Map = Waze.map;
   mro_OL = OpenLayers;
-  mro_mapLayers = mro_Map.getLayersBy('uniqueName','Freedit L1+ beta');
-  raid_mapLayer = new mro_OL.Layer.Vector('Freedit L1+ beta', {
+  mro_mapLayers = mro_Map.getLayersBy('uniqueName','Freedit L1+');
+  raid_mapLayer = new mro_OL.Layer.Vector('Freedit L1+', {
     displayInLayerSwitcher: true,
-    uniqueName: 'Freedit L1+ beta'
+    uniqueName: 'Freedit L1+'
   });
 
-  I18n.translations.en.layers.name['Freedit L1+ beta'] = 'Freedit L1+ beta';
+  I18n.translations.en.layers.name['Freedit L1+'] = 'Freedit L1+';
   mro_Map.addLayer(raid_mapLayer);
 
 
@@ -498,9 +498,10 @@ function freedit_make_tab() {
   tCon = '';  //  tabContent (obsah zalozky)
   tCon += '<div class="fe-tab-header">'
     + '<a href="#" id="freedit-add-new">' + fe_t('tab_add_new_freedit') + '</a><br />'
-    + '<a href="https://docs.google.com/spreadsheets/d/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/edit#gid=0" target="_blank">' + fe_t('tab_freedit_table') + '</a>'
+    // + '<a href="https://docs.google.com/spreadsheets/d/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/edit#gid=0" target="_blank">' + fe_t('tab_freedit_table') + '</a>'
     + ' / (' + fe_t('tab_graphs') + ') / '
-    + '<a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">' + fe_t('tab_forum') + '</a> <font size="1">(' + fe_t('tab_signpost') + ')</font><br />';
+    + '<a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">' + fe_t('tab_forum') + '</a> <font size="1">(' + fe_t('tab_signpost') + ')</font><br><br>'
+    + '<form action="" class="freedit_id_form"><input type="text" name="freedit_id_input" class="freedit_id_input" placeholder="Zadej číslo F…"><input type="submit" name="freedit_id_search" class="freedit_id_search" value="Přejít"></form>';
 
   if (FE_status == 'on') {
     tCon += '<br /><br />' + fe_t('tab_status_message_online', {'state': 'ONline', 'freedit_count': FE_dataCount});
@@ -583,6 +584,21 @@ function freedit_make_tab() {
   addon.id = 'sidepanel-freedit';
   addon.className = 'tab-pane';
   tabContent.appendChild(addon);
+
+  $('.freedit_id_form').on('submit', function(event) {
+    event.preventDefault();
+
+    freedit_id = parseInt($('.freedit_id_input').val());
+
+    if (!isNaN(freedit_id) && typeof FE_data[freedit_id] === 'object') {
+      $('.freedit_id_input').val('');
+      freedit_jump_to({lon:FE_data[freedit_id].lon, lat:FE_data[freedit_id].lat, zoom:FE_data[freedit_id].zoom, segments:null, nodes:null, venues:null, mapUpdateRequest:null});
+      freedit_message_center(freedit_id);
+    }
+    else {
+      alert('Freedit nenalezen.');
+    }
+  });
 }
 
 function freedit_message_center(freedit_id) {
