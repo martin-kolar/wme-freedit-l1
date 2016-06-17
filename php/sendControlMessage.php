@@ -20,7 +20,7 @@ if ($controllorsKeys[$editor] == $key) {
 			'datetime' => Date('Y-m-d H:i:s'),
 			'nick' => $editor,
 			'state' => $state,
-			'comment' => $comment,
+			'comment' => nl2br($comment),
 			'ip' => $ip
 		);
 
