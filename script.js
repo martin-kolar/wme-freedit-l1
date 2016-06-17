@@ -496,10 +496,15 @@ function freedit_make_tab() {
   FE_myCompleteHtml = '';
 
   tCon = '';  //  tabContent (obsah zalozky)
-  tCon += '<div class="fe-tab-header">'
-    + '<a href="#" id="freedit-add-new">' + fe_t('tab_add_new_freedit') + '</a><br />'
-    // + '<a href="https://docs.google.com/spreadsheets/d/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/edit#gid=0" target="_blank">' + fe_t('tab_freedit_table') + '</a>'
-    + ' / (' + fe_t('tab_graphs') + ') / '
+  tCon += '<div class="fe-tab-header">';
+
+  if (Fe_me.rank > 1) {
+    tCon += '<a href="#" id="freedit-add-new">' + fe_t('tab_add_new_freedit') + '</a><br />';
+  }
+
+  // + '<a href="https://docs.google.com/spreadsheets/d/1wywD5uYNmejO_t6Gufzu5tBW0SeVAFdr2KVdeSY1mWg/edit#gid=0" target="_blank">' + fe_t('tab_freedit_table') + '</a>'
+
+  tCon += ' / (' + fe_t('tab_graphs') + ') / '
     + '<a href="https://www.waze.com/forum/viewtopic.php?f=274&amp;t=134151#p1065158&quot;" target="_blank">' + fe_t('tab_forum') + '</a> <font size="1">(' + fe_t('tab_signpost') + ')</font><br><br>'
     + '<form action="" class="freedit_id_form"><input type="text" name="freedit_id_input" class="freedit_id_input" placeholder="Zadej číslo F…"><input type="submit" name="freedit_id_search" class="freedit_id_search" value="Přejít"></form>';
 
