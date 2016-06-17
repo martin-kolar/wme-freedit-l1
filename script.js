@@ -616,7 +616,13 @@ function freedit_message_center(freedit_id) {
       + '<div class="header">'
       + '<a class="close-panel">×</a>'
       + '<div class="type">Freedit ' + freedit_id + '</div>'
-      + '<div class="reported">' + actualFe.name + ' (' + actualFe.district + ') - ' + actualFe.attrs + '<br />Vložil: ' + actualFe.added_by + '</div>'
+      + '<div class="reported">' + actualFe.name + ' (' + actualFe.district + ') - ' + actualFe.attrs + '<br />Vložil: ' + actualFe.added_by;
+
+      if (actualFe.editor != null) {
+        msgCnt += '<br> Editoval: ' + actualFe.editor;
+      }
+
+    msgCnt += '</div>'
       + '</div>'
       + '<div class="body">'
       + '<div class="problem-data">'
