@@ -6,12 +6,13 @@
 // @include             https://www.waze.com/editor/*
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
-// @version             0.6.7
+// @include             https://beta.waze.com/*
+// @version             0.6.7.1
 // @grant               none
 // ==/UserScript==
 //--------------------------------------------------------------------------------------
 
-FE_version = 'Beta 0.6.7';
+FE_version = 'Beta 0.6.7.1';
 
 /* definice trvalých proměných */
   var FE_data = [];
