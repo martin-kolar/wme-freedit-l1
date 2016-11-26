@@ -7,12 +7,12 @@
 // @include             https://www.waze.com/*/editor/*
 // @include             https://editor-beta.waze.com/*
 // @include             https://beta.waze.com/*
-// @version             0.6.7.1
+// @version             0.6.7.2
 // @grant               none
 // ==/UserScript==
 //--------------------------------------------------------------------------------------
 
-FE_version = 'Beta 0.6.7.1';
+FE_version = 'Beta 0.6.7.2';
 
 /* definice trvalých proměných */
   var FE_data = [];
@@ -36,6 +36,12 @@ FE_version = 'Beta 0.6.7.1';
     FE_controllorKey = '';  //  pokud jsi dostal klic pro kontrolory, sem ho prosim zadej!
   }
 
+  //  controllors keys settings
+  var FE_controllorKeyEnable = localStorage.getItem('FE_controllorKeyEnable');
+  if (typeof FE_controllorKeyEnable != 'string') {
+    FE_controllorKeyEnable = '';
+  }
+
   //  online/offline status
   var FE_status = localStorage.getItem('FE_status');
   if (FE_status === null) { //  default status
@@ -53,8 +59,9 @@ FE_version = 'Beta 0.6.7.1';
   };
 
   //  language settings
-  var FE_allowLanguage = ['cs', 'en'];
-  var FE_language = 'en';  //  default language
+  // var FE_allowLanguage = ['cs', 'en'];
+  var FE_allowLanguage = ['cs'];
+  var FE_language = 'cs';  //  default language
   var FE_translation = [];
 
   //  cs translation
@@ -286,7 +293,7 @@ function InitMapRaidOverlay() {
     uniqueName: 'Freedit L1+'
   });
 
-  I18n.translations.en.layers.name['Freedit L1+'] = 'Freedit L1+';
+  // I18n.translations.en.layers.name['Freedit L1+'] = 'Freedit L1+';
   mro_Map.addLayer(raid_mapLayer);
 
 
@@ -480,7 +487,16 @@ function fe_l(name, params) { //  function for links
 }
 
 function freedit_can_controll() {
-  if (FE_controllorKey != '') {
+  console.log(FE_controllorKey, FE_controllorKeyEnable);
+  if (FE_controllorKey != '' && FE_controllorKeyEnable == '') {
+    return true;
+  }
+
+  return false;
+}
+
+function freedit_can_control_disable() {
+  if (FE_controllorKey != '' && FE_controllorKeyEnable == '0') {
     return true;
   }
 
@@ -514,6 +530,13 @@ function freedit_make_tab() {
   }
   else {
     tCon += '<br /><br />' + fe_t('tab_status_message_offline', {'state': 'OFFline', 'freedit_count': FE_dataCount, 'date': localStorage.getItem("FE_data_date")});
+  }
+
+  if (freedit_can_controll()) {
+    tCon += '<br><br><a href="#" class="freedit-turn-off-controlor">Vypnout kontrolu</a>';
+  }
+  else if (freedit_can_control_disable()) {
+    tCon += '<br><br><a href="#" class="freedit-turn-on-controlor">Zapnout kontrolu</a>';
   }
 
   for (var i in FE_data) {
@@ -1137,6 +1160,18 @@ function freedit_init() {
       localStorage.setItem('FE_status', 'on');
     }
     window.location.reload();
+  });
+
+  $('.freedit-turn-off-controlor').on('click', function(event) {
+    event.preventDefault();
+    localStorage.setItem('FE_controllorKeyEnable', '0');
+    alert('Refreshni prohlížeč.');
+  });
+
+  $('.freedit-turn-on-controlor').on('click', function(event) {
+    event.preventDefault();
+    localStorage.setItem('FE_controllorKeyEnable', '');
+    alert('Refreshni prohlížeč.');
   });
 
   var mapFooter = getElementsByClassName("WazeControlPermalink");
