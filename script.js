@@ -3,16 +3,16 @@
 // @namespace           https://greasyfork.org/users/10038-janek250
 // @author              Janek250 & Martin Kolář & krizecek
 // @description         Vrstva míst úprav pro nováčky Freedit L1+
-// @include             https://www.waze.com/editor/*
-// @include             https://www.waze.com/*/editor/*
-// @include             https://editor-beta.waze.com/*
-// @include             https://beta.waze.com/*
-// @version             0.6.7.2
+// @include             https://www.waze.com/editor*
+// @include             https://www.waze.com/*/editor*
+// @include             https://editor-beta.waze.com*
+// @include             https://beta.waze.com*
+// @version             0.6.7.3
 // @grant               none
 // ==/UserScript==
 //--------------------------------------------------------------------------------------
 
-FE_version = 'Beta 0.6.7.2';
+FE_version = 'Beta 0.6.7.3';
 
 /* definice trvalých proměných */
   var FE_data = [];
